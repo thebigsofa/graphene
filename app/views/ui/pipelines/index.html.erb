@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <ul class="list-group">
+        <li class="list-group-item"><b><%= Time.now.to_formatted_s %></b></li>
+        <li class="list-group-item"><b><%= Pipeline.count %></b> Pipelines</li>
+        <li class="list-group-item"><b><%= Jobs::Base.count %></b> Jobs</li>
+      </ul>
+    </div>
+    <div class="col-9">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link <%= "active" if params[:state].blank? %>" href="<%= ui_pipelines_path(search: params[:search]) %>">All</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= "active" if params[:state] == "in_progress" %>" href="<%= ui_pipelines_path(search: params[:search], state: "in_progress") %>">In Progress</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= "active" if params[:state] == "failed" %>" href="<%= ui_pipelines_path(search: params[:search], state: "failed") %>">Failed</a>
+        </li>
+      </ul>
+
+      <br/>
+
+      <% unless params[:search].blank? %>
+        <h4>Search results for "<%= params[:search] %>"</h4>
+        <br/>
+      <% end %>
+
+      <table class="table table-sm table-striped table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Last Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @pipelines.each do |pipeline| %>
+            <tr>
+              <th>
+                <%= link_to pipeline.id, ui_pipeline_path(pipeline.id) %>
+              </th>
+              <th><%= pipeline.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></th>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <%= paginate @pipelines, theme: 'twitter-bootstrap-4' %>
+    </div>
+  </div>
+</div>
+

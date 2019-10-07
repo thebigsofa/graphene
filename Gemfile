@@ -4,12 +4,8 @@ ruby "2.6.3"
 
 source "https://rubygems.org"
 
-# gem "sheaf"
+gemspec
 
-# HTTP
-gem "excon"
-gem "faraday"
-gem "faraday_middleware"
-
-# Shellout
-gem "terrapin"
+source "https://gems.contribsys.com/" do
+  gem "sidekiq-pro"
+end

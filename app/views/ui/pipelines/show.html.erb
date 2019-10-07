@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <h2>Pipeline <%= @pipeline.id %> (Version <%= @pipeline.version %>)</h2>
+  </div>
+  <p/>
+
+  <div class="row">
+    <div class="col">
+      <div class="status">
+        <div class="row justify-content-center">
+          <h3>Status</h3>
+        </div>
+        <div class="row justify-content-center">
+          <pre class="json"><%= PipelineSerializer.new(@pipeline).to_json %></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="graph">
+        <div class="row justify-content-center">
+          <h3>Graph</h3>
+        </div>
+        <div class="row justify-content-center">
+          <pre class="viz"><%= @pipeline.to_dot %></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
