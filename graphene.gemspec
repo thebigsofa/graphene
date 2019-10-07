@@ -1,14 +1,34 @@
-Gem::Specification.new do |s|
-  s.name = %q{graphene}
-  s.version = "#{Graphene::VERSION}"
-  s.date = %q{2011-09-29}
-  s.summary = %q{A gem for running pipelines}
-  s.files = [
-    "lib/graphene.rb"
-  ]
-  s.require_paths = ["lib"]
+$:.push File.expand_path("lib", __dir__)
 
-  # HTTP
+# Maintain your gem's version:
+require "graphene/version"
+
+# Describe your gem and declare its dependencies:
+Gem::Specification.new do |spec|
+  spec.name        = "graphene"
+  spec.version     = Graphene::VERSION
+  spec.authors     = ["BigSofaTech"]
+  spec.email       = ["info@bigsofatech.com"]
+  spec.homepage    = "https://www.bigsofatech.com/"
+  spec.summary     = "Graphene"
+  spec.description = "Graphene"
+  spec.license     = "BigSofaTech"
+
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  else
+    raise "RubyGems 2.0 or newer is required to protect against " \
+      "public gem pushes."
+  end
+
+  spec.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md", "Gemfile"]
+  s.required_ruby_version = '>= 2.6.0'
+
+  spec.add_dependency "rails", "~> 6.0.0"
+
+    # HTTP
   # s.add_dependency "excon"
   # s.add_dependency "faraday"
   # s.add_dependency "faraday_middleware"
@@ -28,14 +48,4 @@ Gem::Specification.new do |s|
 
   # Task processing
   s.add_dependency "sheaf"
-
-  # Testing
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "rspec-its"
-  s.add_development_dependency "rspec_junit_formatter"
-  s.add_development_dependency "timecop"
-  s.add_development_dependency "simplecov"
-  s.add_development_dependency "simplecov-console"
 end
-
-
