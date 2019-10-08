@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe CheckStateVisitor do
+RSpec.describe Graphene::Visitors::CheckState do
   let(:subject) { described_class.new }
 
   let(:graph) do

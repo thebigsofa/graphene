@@ -161,11 +161,11 @@ RSpec.describe Graphene::Pipeline do
 
     before do
       subject.add_graph(graph).each(&:save!)
-      subject.accept(SidekiqVisitor.new)
+      subject.accept(Graphene::Visitors::Sidekiq.new)
     end
 
     it "visits each child" do
-      expect(SidekiqVisitor.jobs.count).to eq(1)
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
     end
   end
 

@@ -17,7 +17,7 @@ RSpec.describe UpdatePipeline do
     it "updates the pipeline params" do
       expect(result).to eq(true)
       expect(pipeline.params["foo"]).to eq("bar")
-      expect(SidekiqVisitor.jobs.count).to eq(0)
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe UpdatePipeline do
 
     it "does not save the changes" do
       expect(result).to eq(false)
-      expect(SidekiqVisitor.jobs.count).to eq(0)
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       expect(pipeline.reload.params.dig("video_activity_detection", "video_detection_threshold")).to eq(0.000027)
     end
   end
@@ -127,8 +127,8 @@ RSpec.describe UpdatePipeline do
       expect(video_activity_detection_job.reload).to be_pending
       expect(child_job.reload).to be_pending
       expect(extract_md5_job.reload).to be_failed
-      expect(SidekiqVisitor.jobs.count).to eq(1)
-      expect(SidekiqVisitor.jobs.first["args"]).to eq([pipeline.to_global_id.to_s])
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+      expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([pipeline.to_global_id.to_s])
     end
   end
 
@@ -149,7 +149,7 @@ RSpec.describe UpdatePipeline do
 
     it "does not save the changes" do
       expect(result).to eq(false)
-      expect(SidekiqVisitor.jobs.count).to eq(0)
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
     end
   end
 
@@ -199,8 +199,8 @@ RSpec.describe UpdatePipeline do
       expect(pipeline).to be_persisted
       expect(pipeline.jobs.all?(&:persisted?)).to eq(true)
 
-      expect(SidekiqVisitor.jobs.count).to eq(1)
-      expect(SidekiqVisitor.jobs.first["args"]).to eq([pipeline.to_global_id.to_s])
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+      expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([pipeline.to_global_id.to_s])
 
       # Can't use the cached jobs here since we've created new job versions with new UUIDs
       encode = pipeline.jobs.detect { |j| j.class == Jobs::Transform::Zencoder }
@@ -284,7 +284,7 @@ RSpec.describe UpdatePipeline do
       expect(pipeline.version).to eq(1)
       expect(pipeline.jobs.count).to eq(1)
 
-      expect(SidekiqVisitor.jobs.count).to eq(0)
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
     end
   end
 

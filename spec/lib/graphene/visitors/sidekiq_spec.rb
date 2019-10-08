@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe SidekiqVisitor do
+RSpec.describe Graphene::Visitors::Sidekiq do
   let(:pipeline) { create(:pipeline) }
   let(:root) do
     Jobs::Base.from_graph([Jobs::Base, Jobs::Base], pipeline: pipeline).first.tap do |root|
@@ -30,8 +30,8 @@ RSpec.describe SidekiqVisitor do
       end
 
       it "enqueues sub jobs" do
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([job_id])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([job_id])
       end
     end
   end
@@ -44,8 +44,8 @@ RSpec.describe SidekiqVisitor do
 
       it "processes the job" do
         expect(root).to be_complete
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([child_gid])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([child_gid])
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe SidekiqVisitor do
         expect(root).to be_failed
         expect(root.error).to eq("Tasks::Helpers::Fail::Error")
         expect(root.error_message).to eq("forced failure")
-        expect(SidekiqVisitor.jobs.count).to eq(0)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe SidekiqVisitor do
 
       it "does not processes the job" do
         expect(root).to be_in_progress
-        expect(SidekiqVisitor.jobs.count).to eq(0)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe SidekiqVisitor do
 
       it "does not processes the job" do
         expect(root).to be_cancelled
-        expect(SidekiqVisitor.jobs.count).to eq(0)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
     end
 
@@ -106,8 +106,8 @@ RSpec.describe SidekiqVisitor do
         expect(job).to be_failed
         expect(job.error).to eq("Jobs::DependencyError")
         expect(job.error_message).to eq("one or more parent jobs failed")
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([child.to_global_id.to_s])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([child.to_global_id.to_s])
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe SidekiqVisitor do
 
       it "does not processes the job" do
         expect(job).to be_pending
-        expect(SidekiqVisitor.jobs.count).to eq(0)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
     end
 
@@ -136,8 +136,8 @@ RSpec.describe SidekiqVisitor do
         expect(root).to be_failed
         expect(root.error).to eq("StandardError")
         expect(root.error_message).to eq("foobar")
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([child.to_global_id.to_s])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([child.to_global_id.to_s])
       end
     end
 
@@ -154,9 +154,9 @@ RSpec.describe SidekiqVisitor do
       after { Timecop.return }
 
       it "enqueues a retry job" do
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([root.to_global_id.to_s, retries + 1])
-        expect(SidekiqVisitor.jobs.first["at"]).to eq((Time.now + 5.minutes).to_f)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([root.to_global_id.to_s, retries + 1])
+        expect(Graphene::Visitors::Sidekiq.jobs.first["at"]).to eq((Time.now + 5.minutes).to_f)
         expect(root).to be_retrying
         expect(root.error).to eq("StandardError")
         expect(root.error_message).to eq("foobar")
@@ -175,10 +175,10 @@ RSpec.describe SidekiqVisitor do
 
       it "enqueues a retry job" do
         subject.process(root, retries)
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([root.to_global_id.to_s, 5, true])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([root.to_global_id.to_s, 5, true])
         expect(root.reload).to be_in_progress
-        SidekiqVisitor.drain
+        Graphene::Visitors::Sidekiq.drain
         expect(root.reload).to be_complete
       end
     end
@@ -191,7 +191,7 @@ RSpec.describe SidekiqVisitor do
 
       it "does not processes the job" do
         expect(root).to be_retrying
-        expect(SidekiqVisitor.jobs.count).to eq(0)
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
     end
 
@@ -205,8 +205,8 @@ RSpec.describe SidekiqVisitor do
       end
 
       it "enqueues the child jobs" do
-        expect(SidekiqVisitor.jobs.count).to eq(1)
-        expect(SidekiqVisitor.jobs.first["args"]).to eq([child.to_global_id.to_s])
+        expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+        expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([child.to_global_id.to_s])
       end
     end
   end

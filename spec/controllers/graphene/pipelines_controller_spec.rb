@@ -57,8 +57,8 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     end
 
     it "enqueues a visitor job for the pipeline" do
-      expect(SidekiqVisitor.jobs.count).to eq(1)
-      expect(SidekiqVisitor.jobs.first["args"]).to eq([Graphene::Pipeline.first.to_global_id.to_s])
+      expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
+      expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([Graphene::Pipeline.first.to_global_id.to_s])
     end
 
     it "adds a request params audit" do

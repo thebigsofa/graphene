@@ -49,7 +49,7 @@ module Graphene
         next unless job_params_changed?(job)
 
         job.assign_attributes(state: :pending, error: nil, error_message: nil)
-        CheckStateVisitor.new.visit(job)
+        Graphene::Visitors::CheckState.new.visit(job)
       end
       pipeline.each(&:save!)
     end
@@ -75,7 +75,7 @@ module Graphene
       return unless changed_params.include?(:jobs) ||
                     pipeline.jobs.any? { |job| job_params_changed?(job) }
 
-      SidekiqVisitor.new.visit(pipeline)
+      Graphene::Visitors::Sidekiq.new.visit(pipeline)
     end
 
     def job_params_changed?(job)

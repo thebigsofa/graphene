@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe DotVisitor do
+RSpec.describe Graphene::Visitors::Dot do
   let(:subject) { described_class.new }
 
   let(:graph) do
