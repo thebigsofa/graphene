@@ -2,7 +2,7 @@
 
 module Graphene
   class Edge < ApplicationRecord
-    belongs_to :origin, class_name: "Jobs::Base"
-    belongs_to :destination, class_name: "Jobs::Base"
+    belongs_to :origin, class_name: "Graphene::Jobs::Base"
+    belongs_to :destination, class_name: "Graphene::Jobs::Base"
   end
 end

@@ -3,8 +3,8 @@
     <div class="col">
       <ul class="list-group">
         <li class="list-group-item"><b><%= Time.now.to_formatted_s %></b></li>
-        <li class="list-group-item"><b><%= Pipeline.count %></b> Pipelines</li>
-        <li class="list-group-item"><b><%= Jobs::Base.count %></b> Jobs</li>
+        <li class="list-group-item"><b><%= Graphene::Pipeline.count %></b> Pipelines</li>
+        <li class="list-group-item"><b><%= Graphene::Jobs::Base.count %></b> Jobs</li>
       </ul>
     </div>
     <div class="col-9">

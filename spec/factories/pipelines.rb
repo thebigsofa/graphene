@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :pipeline do
+  factory :pipeline, class: Graphene::Pipeline do
     params do
       media_uid = if defined?(TEST_MEDIA_UID)
                     TEST_MEDIA_UID

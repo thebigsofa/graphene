@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-module Jobs
-  class Fail < Jobs::Base
-    STACK = Stack[Tasks::Helpers::Fail]
+module Graphene
+  module Jobs
+    class Fail < Graphene::Jobs::Base
+      # STACK = Stack[Tasks::Helpers::Fail]
+    end
   end
 end

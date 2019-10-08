@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Graphene
+  def self.table_name_prefix
+  end
+
   class Engine < ::Rails::Engine
     isolate_namespace Graphene
 

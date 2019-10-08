@@ -3,7 +3,7 @@
 class CreateJobs < ActiveRecord::Migration[5.2]
   def change
     create_table :jobs, id: :uuid do |t|
-      t.string(:type, null: false, index: true, default: "Jobs::Base")
+      t.string(:type, null: false, index: true, default: "Graphene::Jobs::Base")
 
       t.string(:state, null: false, default: "pending", index: true)
       t.string(:error)
