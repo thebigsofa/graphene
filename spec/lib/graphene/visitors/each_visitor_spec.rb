@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe EachVisitor do
+RSpec.describe Graphene::Visitors::Each do
   let(:graph) do
     [
       Jobs::Base,

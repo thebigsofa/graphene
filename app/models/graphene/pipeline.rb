@@ -16,16 +16,16 @@ module Graphene
       required: %w[jobs]
     }.freeze
 
-    include Enumerable
-    include PgSearch
+    include ::Enumerable
+    include ::PgSearch
 
     multisearchable against: %i[id params]
     pg_search_scope :search, against: %i[id params]
 
-    has_many :jobs, ->(pipeline) { version(pipeline.version) }, class_name: "Jobs::Base"
-    has_many :all_jobs, class_name: "Jobs::Base"
+    has_many :jobs, ->(pipeline) { version(pipeline.version) }, class_name: "Graphene::Jobs::Base"
+    has_many :all_jobs, class_name: "Graphene::Jobs::Base"
 
-    has_many :children, ->(pipeline) { version(pipeline.version).without_parents }, class_name: "Jobs::Base"
+    has_many :children, ->(pipeline) { version(pipeline.version).without_parents }, class_name: "Graphene::Jobs::Base"
 
     validates :params,
               presence: true,
@@ -43,7 +43,7 @@ module Graphene
     end
 
     def add_graph(graph)
-      Jobs::Base.from_graph(graph, pipeline: self).tap do |roots|
+      Graphene::Jobs::Base.from_graph(graph, pipeline: self).tap do |roots|
         children.reset if persisted? && children.loaded?
         jobs.reset if persisted? && jobs.loaded?
         add_roots_without_save(roots)
@@ -67,7 +67,7 @@ module Graphene
     end
 
     def each(&block)
-      visitor = EachVisitor.new(block)
+      visitor = Graphene::Visitors::Each.new(block)
       children.each do |child|
         visitor.visit(child)
       end

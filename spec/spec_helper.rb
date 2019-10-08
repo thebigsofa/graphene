@@ -94,4 +94,5 @@ RSpec.configure do |config|
   config.include_context(:with_auth_token, :with_auth_token)
 
   config.include(FactoryBot::Syntax::Methods)
+  config.before(:suite) { FactoryBot.find_definitions }
 end

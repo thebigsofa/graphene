@@ -17,7 +17,10 @@ gemspec
 gem "sheaf"
 
 gem "pg"
+gem "pg_search"
 gem "hiredis"
+
+gem "activerecord_json_validator"
 
 # Job processing
 gem "sidekiq-pro", source: "https://gems.contribsys.com/"

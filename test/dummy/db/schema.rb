@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2019_06_06_132501) do
   end
 
   create_table "jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type", default: "Jobs::Base", null: false
+    t.string "type", default: "Graphene::Jobs::Base", null: false
     t.string "state", default: "pending", null: false
     t.string "error"
     t.string "error_message"

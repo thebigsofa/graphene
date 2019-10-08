@@ -97,7 +97,7 @@ module Graphene
       end
 
       def each(&block)
-        EachVisitor.new(block).visit(self)
+        Graphene::Visitors::Each.new(block).visit(self)
       end
 
       def accept(visitor)
@@ -148,13 +148,13 @@ module Graphene
       def audit_state_changes
         return unless state_changed?
 
-        audits << Audits::StateChange.new(self, *changes.fetch(:state))
+        audits << Graphene::Audits::StateChange.new(self, *changes.fetch(:state))
       end
 
       def audit_errors
         return unless error_changed? && error
 
-        audits << Audits::Error.new(self, error, error_message)
+        audits << Graphene::Audits::Error.new(self, error, error_message)
       end
 
       def validate_audits_type
