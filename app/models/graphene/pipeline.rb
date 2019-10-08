@@ -17,7 +17,7 @@ module Graphene
     }.freeze
 
     include ::Enumerable
-    include ::PgSearch
+    include ::PgSearch::Model
 
     multisearchable against: %i[id params]
     pg_search_scope :search, against: %i[id params]
