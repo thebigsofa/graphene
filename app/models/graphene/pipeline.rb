@@ -74,7 +74,7 @@ module Graphene
     end
 
     def to_dot
-      visitor = DotVisitor.new
+      visitor = Graphene::Visitors::Dot.new
       visitor.visit(self)
       visitor.to_dot
     end

@@ -4,7 +4,7 @@ module Graphene
   class PipelinesController < AuthenticatedController
     def create
       if (@pipeline = CreatePipeline.new(pipeline_params).call).persisted?
-        SidekiqVisitor.new.visit(pipeline)
+        Graphene::Visitors::Sidekiq.new.visit(pipeline)
         render(status: :created, json: pipeline_to_json)
       else
         render(status: :unprocessable_entity, json: { errors: pipeline.errors }.to_json)
