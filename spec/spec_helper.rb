@@ -20,7 +20,6 @@ if ENV["CIRCLE_ARTIFACTS"]
 end
 
 [
-  "lib/graphene/engine.rb",
   "spec/support/initializers/**/*.rb",
   "spec/support/helpers/**/*.rb",
   "spec/support/shared_contexts/**/*.rb",
