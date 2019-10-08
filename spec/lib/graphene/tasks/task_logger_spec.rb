@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe TaskLogger do
+RSpec.describe Graphene::Tasks::Logger do
   let(:job) { create :job }
   let(:logger) { Logger.new(nil) }
 

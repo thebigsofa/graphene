@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-RSpec.describe Concerns::Loggable do
+RSpec.describe Graphene::Concerns::Loggable do
   subject do
     Class.new do
-      include Concerns::Loggable
+      include Graphene::Concerns::Loggable
 
       on_log do |message|
         "baz #{message}"

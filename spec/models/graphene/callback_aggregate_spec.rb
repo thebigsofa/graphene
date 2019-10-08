@@ -2,15 +2,15 @@
 
 require "spec_helper"
 
-RSpec.describe CallbackAggregate do
+RSpec.describe Graphene::CallbackAggregate do
   subject { create(:pipeline, params: params) }
 
   let(:params) { attributes_for(:pipeline).fetch(:params) }
 
-  let(:agg) { CallbackAggregate.new(pipeline_id: subject.id) }
+  let(:agg) { Graphene::CallbackAggregate.new(pipeline_id: subject.id) }
 
   before do
-    CallbackAggregate.create(pipeline_id: subject.id, count: 1)
+    Graphene::CallbackAggregate.create(pipeline_id: subject.id, count: 1)
   end
 
   describe "exists?" do
@@ -19,7 +19,7 @@ RSpec.describe CallbackAggregate do
     end
 
     it "returns false if doesn't exist" do
-      agg = CallbackAggregate.new(pipeline_id: "hello")
+      agg = Graphene::CallbackAggregate.new(pipeline_id: "hello")
       expect(agg.exists?).to eq(false)
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe CallbackAggregate do
   describe ".count_for" do
     it "returns count" do
       expect(
-        CallbackAggregate.count_for(subject.id)
+        Graphene::CallbackAggregate.count_for(subject.id)
       ).to eq(1)
     end
   end
@@ -47,11 +47,11 @@ RSpec.describe CallbackAggregate do
   describe ".clear" do
     it "clears count" do
       expect(
-        CallbackAggregate.clear(subject.id)
+        Graphene::CallbackAggregate.clear(subject.id)
       ).to eq("OK")
 
       expect(
-        CallbackAggregate.count_for(subject.id)
+        Graphene::CallbackAggregate.count_for(subject.id)
       ).to eq(0)
     end
   end

@@ -21,9 +21,9 @@ FactoryBot.define do
     #   end
     # end
 
-    # trait :fail do
-    #   initialize_with { Jobs::Fail.new(attributes) }
-    # end
+    trait :fail do
+      initialize_with { Graphene::Jobs::Fail.new(attributes) }
+    end
 
     # trait :blacklist_filter do
     #   initialize_with { Jobs::QA::BlacklistFilter.new(attributes) }

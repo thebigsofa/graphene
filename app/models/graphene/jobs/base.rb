@@ -113,7 +113,7 @@ module Graphene
         stack.fmap do |klass|
           task = klass.new(pipeline.params.fetch(group, {}).deep_dup).tap do |t|
             t.params[:current_job] = self
-            t.logger = TaskLogger.new(self)
+            t.logger = Graphene::Tasks::Logger.new(self)
           end
           WithLogging.new(self, task)
         end.call(*params, &block)

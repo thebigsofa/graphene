@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Jobs::Fail do
+RSpec.describe Graphene::Jobs::Fail do
   subject { build :job, :fail }
 
   describe "#process" do

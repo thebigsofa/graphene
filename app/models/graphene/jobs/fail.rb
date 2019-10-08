@@ -3,7 +3,7 @@
 module Graphene
   module Jobs
     class Fail < Graphene::Jobs::Base
-      # STACK = Stack[Tasks::Helpers::Fail]
+      STACK = Stack[Graphene::Tasks::Helpers::Fail]
     end
   end
 end
