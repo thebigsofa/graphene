@@ -30,6 +30,7 @@ gem "terrapin"
 
 # Testing
 group :test do
+  gem "pry"
   gem "rspec-rails"
   gem "rspec-its"
   gem "rspec_junit_formatter"
