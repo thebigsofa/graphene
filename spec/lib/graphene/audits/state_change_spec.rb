@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Audits::StateChange do
+RSpec.describe Graphene::Audits::StateChange do
   let(:job) { build(:job) }
 
   subject { described_class.new(job, "foo", "bar") }

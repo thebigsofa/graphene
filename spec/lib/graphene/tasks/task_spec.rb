@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-RSpec.describe Task do
+RSpec.describe Graphene::Tasks::Task do
   let(:klass) do
     Class.new do
-      include Task
+      include Graphene::Tasks::Task
 
       def initialize(foo:, bar:, baz: 3)
         super
@@ -31,7 +31,7 @@ RSpec.describe Task do
     end
 
     it "excludes the keyword splat parameter" do
-      expect(Class.new { include Task }.params).to be_empty
+      expect(Class.new { include Graphene::Tasks::Task }.params).to be_empty
     end
   end
 
@@ -59,7 +59,7 @@ RSpec.describe Task do
   describe "#halt!" do
     let(:klass) do
       Class.new do
-        include Task
+        include Graphene::Tasks::Task
 
         def initialize
           halt!(StandardError, "foobar")
@@ -70,12 +70,12 @@ RSpec.describe Task do
     subject { klass.new }
 
     it "raises a Task::Halt" do
-      expect { subject.call }.to raise_error(Task::HaltError).with_message("foobar")
+      expect { subject.call }.to raise_error(Graphene::Tasks::Task::HaltError).with_message("foobar")
     end
 
     it "passes the correct error to wrap" do
       subject.call
-    rescue Task::HaltError => e
+    rescue Graphene::Tasks::Task::HaltError => e
       expect(e.error.class).to eq(StandardError)
       expect(e.error.message).to eq("foobar")
     end
@@ -84,7 +84,7 @@ RSpec.describe Task do
   describe "param validation" do
     let(:klass) do
       Class.new do
-        include Task
+        include Graphene::Tasks::Task
 
         def json_schema_properties
           {
@@ -118,7 +118,7 @@ RSpec.describe Task do
       it "raises a schema error" do
         expect do
           Class.new do
-            include Task
+            include Graphene::Tasks::Task
 
             def initialize(foo:)
               super
@@ -128,7 +128,7 @@ RSpec.describe Task do
               {}
             end
           end
-        end.to raise_error(Task::SchemaError)
+        end.to raise_error(Graphene::Tasks::Task::SchemaError)
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe Task do
       it "raises a schema error" do
         expect do
           Class.new do
-            include Task
+            include Graphene::Tasks::Task
 
             def json_schema_properties
               {}
@@ -146,7 +146,7 @@ RSpec.describe Task do
               super
             end
           end
-        end.to raise_error(Task::SchemaError)
+        end.to raise_error(Graphene::Tasks::Task::SchemaError)
       end
     end
 
@@ -154,7 +154,7 @@ RSpec.describe Task do
       it "raises an error" do
         expect do
           Class.new do
-            include Task
+            include Graphene::Tasks::Task
 
             def json_schema_properties
               {
@@ -168,7 +168,7 @@ RSpec.describe Task do
               super
             end
           end
-        end.to raise_error(Task::SchemaError)
+        end.to raise_error(Graphene::Tasks::Task::SchemaError)
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe Task do
       it "raises no error" do
         expect do
           Class.new do
-            include Task
+            include Graphene::Tasks::Task
 
             def json_schema_properties
               {
@@ -198,7 +198,7 @@ RSpec.describe Task do
       it "raises an error" do
         expect do
           Class.new do
-            include Task
+            include Graphene::Tasks::Task
 
             def initialize(foo:)
               super
@@ -216,7 +216,7 @@ RSpec.describe Task do
               super
             end
           end
-        end.to raise_error(Task::SchemaError)
+        end.to raise_error(Graphene::Tasks::Task::SchemaError)
       end
     end
   end
