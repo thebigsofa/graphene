@@ -5,8 +5,8 @@ module Graphene
     class Sidekiq < Visitor
       MAX_RETRIES = 5
 
-      include Sidekiq::Worker
-      include Timeoutable
+      include ::Sidekiq::Worker
+      include ::Graphene::Timeoutable
 
       sidekiq_options(backtrace: true, retry: false, dead: false)
 
@@ -36,7 +36,7 @@ module Graphene
         parent_state_check(job)
       rescue ActiveRecord::StatementInvalid => e
         re_enqueue(retries, job, true)
-      rescue Task::HaltError => e
+      rescue Graphene::Tasks::Task::HaltError => e
         job.fail!(e.error)
         job.accept(self)
       rescue StandardError => e
@@ -53,11 +53,15 @@ module Graphene
 
       def visit(job)
         self.class.set(queue: job.queue).perform_async(job.to_global_id)
-        Tracking::SidekiqTrackable.call(job.queue)
-        Tracking::KeepAlive.perform_async(job.queue)
+        Graphene::Tracking::SidekiqTrackable.call(job.queue)
+        tracker.perform_async(job.queue)
       end
 
       private
+
+      def tracker
+        @tracker ||= (Graphene.config.sidekiq_tracker || Graphene::Tracking::Disabled)
+      end
 
       def fail_dependent(job)
         job.fail!(Jobs::DependencyError.new("one or more parent jobs failed"))
@@ -75,13 +79,13 @@ module Graphene
 
       def process_job(job)
         job.in_progress!
-        Tracking::KeepAlive.perform_async(job.queue)
+        tracker.perform_async(job.queue)
         with_timeout(5.hours, tracking_alert(job)) { job.process }
         job.accept(self)
       end
 
       def tracking_alert(job)
-        { 30 => proc { Tracking::KeepAlive.perform_async(job.queue) } }
+        { 30 => proc { tracker.perform_async(job.queue) } }
       end
 
       def handle_error(job, error, retries)
@@ -96,7 +100,7 @@ module Graphene
       end
 
       def fail_job(job, error)
-        Sidekiq.logger.info("#{job.class.name} #{job.id}: Retries exhausted")
+        ::Sidekiq.logger.info("#{job.class.name} #{job.id}: Retries exhausted")
         job.fail!(error)
         job.accept(self)
       end
@@ -105,7 +109,7 @@ module Graphene
       def retry_job(job, error, retries)
         job.retrying!(error) unless job.retrying?
         delay = retry_delay(retries)
-        Sidekiq.logger.info(
+        ::Sidekiq.logger.info(
           "#{job.class.name} #{job.id}: Retry #{retries + 1} of #{MAX_RETRIES} in #{delay} seconds"
         )
         self.class.set(queue: job.queue).perform_in(delay, job.to_global_id, retries + 1)
