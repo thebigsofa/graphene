@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Graphene::Visitors::Sidekiq do
   let(:pipeline) { create(:pipeline) }
   let(:root) do
-    Jobs::Base.from_graph([Jobs::Base, Jobs::Base], pipeline: pipeline).first.tap do |root|
+    Graphene::Jobs::Base.from_graph([Graphene::Jobs::Base, Graphene::Jobs::Base], pipeline: pipeline).first.tap do |root|
       root.each(&:save!)
     end
   end
@@ -21,7 +21,7 @@ RSpec.describe Graphene::Visitors::Sidekiq do
         attributes_for(:pipeline).fetch(:params)
       end
 
-      let(:pipeline) { Pipeline.from_params_and_graph(pipeline_params, [Jobs::Base]) }
+      let(:pipeline) { Graphene::Pipeline.from_params_and_graph(pipeline_params, [Graphene::Jobs::Base]) }
       let(:job_id) { pipeline.children.first.to_global_id.to_s }
 
       before do
@@ -51,7 +51,7 @@ RSpec.describe Graphene::Visitors::Sidekiq do
 
     context "halt" do
       let(:root) do
-        Jobs::Base.from_graph([Jobs::Fail], pipeline: pipeline).first.tap do |root|
+        Graphene::Jobs::Base.from_graph([Graphene::Jobs::Fail], pipeline: pipeline).first.tap do |root|
           root.each(&:save!)
         end
       end
@@ -62,7 +62,7 @@ RSpec.describe Graphene::Visitors::Sidekiq do
 
       it "sets the job to failed" do
         expect(root).to be_failed
-        expect(root.error).to eq("Tasks::Helpers::Fail::Error")
+        expect(root.error).to eq("Graphene::Tasks::Helpers::Fail::Error")
         expect(root.error_message).to eq("forced failure")
         expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
       end
@@ -104,7 +104,7 @@ RSpec.describe Graphene::Visitors::Sidekiq do
 
       it "sets the job as failed" do
         expect(job).to be_failed
-        expect(job.error).to eq("Jobs::DependencyError")
+        expect(job.error).to eq("Graphene::Jobs::DependencyError")
         expect(job.error_message).to eq("one or more parent jobs failed")
         expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(1)
         expect(Graphene::Visitors::Sidekiq.jobs.first["args"]).to eq([child.to_global_id.to_s])
