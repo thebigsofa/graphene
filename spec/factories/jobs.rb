@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :job, class: Jobs::Base do
+  factory :job, class: Graphene::Jobs::Base do
     association :pipeline, factory: :pipeline
 
     trait :encode do
