@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Audits::Error do
+RSpec.describe Graphene::Audits::Error do
   let(:job) { build(:job) }
 
   subject { described_class.new(job, "foo", "bar") }
