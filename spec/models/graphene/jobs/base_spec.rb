@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Jobs::Base do
+RSpec.describe Graphene::Jobs::Base do
   subject { create :job }
 
   describe "callbacks" do
@@ -16,13 +16,13 @@ RSpec.describe Jobs::Base do
       subject.pipeline.params = {
         "callbacks" => [callback]
       }
-      CallbackAggregate.create(pipeline_id: subject.pipeline.id, count: 1)
+      Graphene::CallbackAggregate.create(pipeline_id: subject.pipeline.id, count: 1)
       subject.complete!
     end
 
     it "notifies all the pipeline callbacks after an update" do
-      expect(CallbackNotifierJob.jobs.count).to eq(1)
-      expect(CallbackNotifierJob.jobs.first["args"]).to eq([subject.pipeline.id, callback])
+      expect(Graphene::CallbackNotifierJob.jobs.count).to eq(1)
+      expect(Graphene::CallbackNotifierJob.jobs.first["args"]).to eq([subject.pipeline.id, callback])
     end
   end
 
@@ -224,11 +224,11 @@ RSpec.describe Jobs::Base do
     end
 
     it "destroys the edges" do
-      expect(Edge.count).to eq(2)
+      expect(Graphene::Edge.count).to eq(2)
 
       subject.destroy!
 
-      expect(Edge.count).to eq(0)
+      expect(Graphene::Edge.count).to eq(0)
     end
   end
 
@@ -254,7 +254,7 @@ RSpec.describe Jobs::Base do
 
     context "single node" do
       let(:graph) do
-        [Jobs::Base]
+        [Graphene::Jobs::Base]
       end
 
       let(:root) { described_class.from_graph(graph, pipeline: pipeline).first }
@@ -267,9 +267,9 @@ RSpec.describe Jobs::Base do
     context "linear" do
       let(:graph) do
         [
-          Jobs::Base,
-          Jobs::Base,
-          Jobs::Base
+          Graphene::Jobs::Base,
+          Graphene::Jobs::Base,
+          Graphene::Jobs::Base
         ]
       end
 
@@ -302,12 +302,12 @@ RSpec.describe Jobs::Base do
     context "non-linear" do
       let(:graph) do
         [
-          Jobs::Base,
+          Graphene::Jobs::Base,
           [
-            [Jobs::Base],
-            [Jobs::Base]
+            [Graphene::Jobs::Base],
+            [Graphene::Jobs::Base]
           ],
-          Jobs::Base
+          Graphene::Jobs::Base
         ]
       end
 
@@ -341,16 +341,16 @@ RSpec.describe Jobs::Base do
     context "mixed types" do
       let(:graph) do
         [
-          Jobs::Base,
-          Jobs::Transform::Zencoder
+          Graphene::Jobs::Base,
+          Support::Jobs::DoNothing
         ]
       end
 
       let(:root) { described_class.from_graph(graph, pipeline: pipeline).first }
 
       it "sets the correct types" do
-        expect(root).to be_kind_of(Jobs::Base)
-        expect(root.children.first).to be_kind_of(Jobs::Transform::Zencoder)
+        expect(root).to be_kind_of(Graphene::Jobs::Base)
+        expect(root.children.first).to be_kind_of(Support::Jobs::DoNothing)
       end
 
       it "assigns the pipeline's version to each job" do
