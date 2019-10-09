@@ -38,7 +38,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#increment_version_and_add_graph" do
-    let(:graph) { [Jobs::Base, Jobs::Transform::Zencoder] }
+    let(:graph) { [Graphene::Jobs::Base, Support::Jobs::Transform::Zencoder] }
 
     context "in-memory" do
       before do
@@ -105,7 +105,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#jobs" do
-    let(:root) { subject.add_graph([Jobs::Base, Jobs::Base, Jobs::Base]).first }
+    let(:root) { subject.add_graph([Graphene::Jobs::Base, Graphene::Jobs::Base, Graphene::Jobs::Base]).first }
 
     before { root.each(&:save!) }
 
@@ -119,7 +119,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#children" do
-    let(:root) { subject.add_graph([Jobs::Base, Jobs::Base]).first }
+    let(:root) { subject.add_graph([Graphene::Jobs::Base, Graphene::Jobs::Base]).first }
 
     before { root.each(&:save!) }
 
@@ -133,7 +133,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#children" do
-    let(:graph) { [Jobs::Base, Jobs::Base, Jobs::Base] }
+    let(:graph) { [Graphene::Jobs::Base, Graphene::Jobs::Base, Graphene::Jobs::Base] }
 
     before do
       subject.add_graph(graph).each(&:save!)
@@ -145,7 +145,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "enumerable" do
-    let(:graph) { [Jobs::Base, Jobs::Base, Jobs::Base] }
+    let(:graph) { [Graphene::Jobs::Base, Graphene::Jobs::Base, Graphene::Jobs::Base] }
 
     before do
       subject.add_graph(graph).each(&:save!)
@@ -157,7 +157,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#accept" do
-    let(:graph) { [Jobs::Base, Jobs::Base, Jobs::Base] }
+    let(:graph) { [Graphene::Jobs::Base, Graphene::Jobs::Base, Graphene::Jobs::Base] }
 
     before do
       subject.add_graph(graph).each(&:save!)
@@ -175,7 +175,7 @@ RSpec.describe Graphene::Pipeline do
       <<~EODOT.strip
         digraph "Graph" {
         node [width=0.375,height=0.25,shape = "record"];
-        1 [label="<f0> Pipeline", fontcolor=black, color=black];
+        1 [label="<f0> Graphene::Pipeline", fontcolor=black, color=black];
         }
       EODOT
     end
@@ -199,8 +199,8 @@ RSpec.describe Graphene::Pipeline do
     end
 
     it "enqueues notification jobs" do
-      expect(CallbackNotifierJob.jobs.count).to eq(2)
-      expect(CallbackNotifierJob.jobs.first["args"])
+      expect(Graphene::CallbackNotifierJob.jobs.count).to eq(2)
+      expect(Graphene::CallbackNotifierJob.jobs.first["args"])
         .to eq([subject.id, "url" => "http://foobar.com/"])
     end
   end
@@ -219,21 +219,21 @@ RSpec.describe Graphene::Pipeline do
     end
 
     it "enqueues notification jobs" do
-      expect(CallbackNotifierJob.jobs.count).to eq(2)
+      expect(Graphene::CallbackNotifierJob.jobs.count).to eq(2)
       expect(
-        CallbackAggregate.count_for(subject.id)
+        Graphene::CallbackAggregate.count_for(subject.id)
       ).to eq(2)
 
       expect_any_instance_of(
-        CallbackNotifierJob
+        Graphene::CallbackNotifierJob
       ).to receive(:connection).exactly(1).times.and_call_original
 
       VCR.use_cassette("models/pipeline/callback") do
-        CallbackNotifierJob.drain
+        Graphene::CallbackNotifierJob.drain
       end
 
       expect(
-        CallbackAggregate.count_for(subject.id)
+        Graphene::CallbackAggregate.count_for(subject.id)
       ).to eq(0)
     end
   end

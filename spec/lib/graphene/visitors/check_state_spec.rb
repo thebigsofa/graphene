@@ -7,18 +7,18 @@ RSpec.describe Graphene::Visitors::CheckState do
 
   let(:graph) do
     [
-      Jobs::Base,
+      Graphene::Jobs::Base,
       [
         [
-          Jobs::Base,
-          Jobs::Base
+          Graphene::Jobs::Base,
+          Graphene::Jobs::Base
         ],
         [
-          Jobs::Base,
-          Jobs::Base
+          Graphene::Jobs::Base,
+          Graphene::Jobs::Base
         ]
       ],
-      Jobs::Transform::Zencoder
+      Support::Jobs::Transform::Zencoder
     ]
   end
 

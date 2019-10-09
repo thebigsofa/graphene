@@ -109,7 +109,7 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
       let(:job) { pipeline.children.first }
 
       before do
-        pipeline.add_graph([Graphene::Jobs::Transform::Zencoder]).each(&:save!)
+        pipeline.add_graph([Support::Jobs::Transform::Zencoder]).each(&:save!)
         pipeline.children.first.fail!(StandardError.new("foobar"))
         request.headers.merge!(headers)
         Timecop.freeze(time) do

@@ -33,7 +33,7 @@ RSpec.describe Graphene::PipelineSerializer do
         let(:pipeline) { create(:pipeline) }
 
         before do
-          pipeline.add_graph(states.map { Jobs::Base }).first.each_with_index do |job, i|
+          pipeline.add_graph(states.map { Graphene::Jobs::Base }).first.each_with_index do |job, i|
             job.state = states[i]
             job.save!
           end
@@ -120,10 +120,10 @@ RSpec.describe Graphene::PipelineSerializer do
 
     let(:graph) do
       [
-        Jobs::Base,
+        Graphene::Jobs::Base,
         [
-          [Jobs::Transform::Zencoder],
-          [Jobs::QA::DurationFilter]
+          [Support::Jobs::Transform::Zencoder],
+          [Support::Jobs::QA::DurationFilter]
         ]
       ]
     end

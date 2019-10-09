@@ -7,16 +7,16 @@ RSpec.describe Graphene::Visitors::Dot do
 
   let(:graph) do
     [
-      Jobs::Base,
+      Graphene::Jobs::Base,
       [
         [
-          Jobs::Transform::Zencoder
+          Support::Jobs::Transform::Zencoder
         ],
         [
-          Jobs::Transform::Zencoder
+          Support::Jobs::Transform::Zencoder
         ]
       ],
-      Jobs::Base
+      Graphene::Jobs::Base
     ]
   end
 
@@ -34,11 +34,11 @@ RSpec.describe Graphene::Visitors::Dot do
     expected = <<~EODOT.strip
       digraph "Graph" {
       node [width=0.375,height=0.25,shape = "record"];
-      1 [label="<f0> Pipeline", fontcolor=black, color=black];
-      2 [label="<f0> Jobs::Base", fontcolor=darkgreen, color=darkgreen];
-      3 [label="<f0> Jobs::Transform::Zencoder", fontcolor=firebrick1, color=firebrick1];
-      4 [label="<f0> Jobs::Base", fontcolor=black, color=black];
-      5 [label="<f0> Jobs::Transform::Zencoder", fontcolor=goldenrod1, color=goldenrod1];
+      1 [label="<f0> Graphene::Pipeline", fontcolor=black, color=black];
+      2 [label="<f0> Graphene::Jobs::Base", fontcolor=darkgreen, color=darkgreen];
+      3 [label="<f0> Support::Jobs::Transform::Zencoder", fontcolor=firebrick1, color=firebrick1];
+      4 [label="<f0> Graphene::Jobs::Base", fontcolor=black, color=black];
+      5 [label="<f0> Support::Jobs::Transform::Zencoder", fontcolor=goldenrod1, color=goldenrod1];
       1 -> 2 [color=darkgreen];
       2 -> 3 [color=firebrick1];
       3 -> 4 [color=black];
