@@ -2,14 +2,75 @@
 
 require "spec_helper"
 
-RSpec.describe Graph::Builder do
-  subject { described_class.new(jobs) }
+RSpec.describe Graphene::Graph::Builder do
+  subject { described_class.new(jobs, mapping: mapping, priorities: priorities) }
+
+  let(:mapping) do
+    {
+      "duplicate_filter" => [
+        [Support::Jobs::QA::DuplicateFilter]
+      ],
+
+      "duration_filter" => [
+        [Support::Jobs::QA::DurationFilter]
+      ],
+
+      "adult_content_filter" => [
+        [Support::Jobs::QA::AdultContentFilter]
+      ],
+
+      "encode" => [
+        [Support::Jobs::Transform::Zencoder]
+      ],
+
+      "extract_frames" => [
+        [Support::Jobs::Process::ExtractFrames]
+      ],
+
+      "extract_metadata" => [
+        [Support::Jobs::Process::ExtractMetadata]
+      ],
+
+      "generate_thumbnails" => [
+        [Support::Jobs::Process::GenerateThumbnails]
+      ],
+
+      "activity_detection" => [
+        [Support::Jobs::Process::AudioActivityDetection],
+        [Support::Jobs::Process::VideoActivityDetection]
+      ],
+      "people_detection" => [
+        [Support::Jobs::Analysis::PeopleDetection]
+      ],
+      "behavioural_recognition" => [
+        [Support::Jobs::Analysis::BehaviouralRecognition]
+      ]
+    }.freeze
+  end
+
+  let(:priorities) do
+    {
+      "duplicate_filter" => 1,
+      "duration_filter" => 1,
+
+      "adult_content_filter" => 2,
+
+      "encode" => 3,
+
+      "extract_frames" => 4,
+      "extract_metadata" => 4,
+      "generate_thumbnails" => 4,
+      "activity_detection" => 4,
+      "people_detection" => 4,
+      "behavioural_recognition" => 4,
+    }.freeze
+  end
 
   context "single job" do
     let(:jobs) { ["encode"] }
 
     let(:expected) do
-      [Jobs::Transform::Zencoder]
+      [Support::Jobs::Transform::Zencoder]
     end
 
     it "generates the expected graph" do
@@ -23,8 +84,8 @@ RSpec.describe Graph::Builder do
     let(:expected) do
       [
         [
-          [Jobs::Process::ExtractFrames],
-          [Jobs::Process::ExtractMetadata]
+          [Support::Jobs::Process::ExtractFrames],
+          [Support::Jobs::Process::ExtractMetadata]
         ]
       ]
     end
@@ -53,19 +114,19 @@ RSpec.describe Graph::Builder do
     let(:expected) do
       [
         [
-          [Jobs::QA::DuplicateFilter],
-          [Jobs::QA::DurationFilter]
+          [Support::Jobs::QA::DuplicateFilter],
+          [Support::Jobs::QA::DurationFilter]
         ],
-        Jobs::QA::AdultContentFilter,
-        Jobs::Transform::Zencoder,
+        Support::Jobs::QA::AdultContentFilter,
+        Support::Jobs::Transform::Zencoder,
         [
-          [Jobs::Process::AudioActivityDetection],
-          [Jobs::Process::VideoActivityDetection],
-          [Jobs::Analysis::BehaviouralRecognition],
-          [Jobs::Process::ExtractFrames],
-          [Jobs::Process::ExtractMetadata],
-          [Jobs::Process::GenerateThumbnails],
-          [Jobs::Analysis::PeopleDetection]
+          [Support::Jobs::Process::AudioActivityDetection],
+          [Support::Jobs::Process::VideoActivityDetection],
+          [Support::Jobs::Analysis::BehaviouralRecognition],
+          [Support::Jobs::Process::ExtractFrames],
+          [Support::Jobs::Process::ExtractMetadata],
+          [Support::Jobs::Process::GenerateThumbnails],
+          [Support::Jobs::Analysis::PeopleDetection]
         ]
       ]
     end
@@ -75,11 +136,11 @@ RSpec.describe Graph::Builder do
     end
 
     it "wraps the classes in job templates" do
-      job = subject.to_graph.flatten.detect do |j|
-        j == Jobs::Process::AudioActivityDetection
+      activity_detection_job = subject.to_graph.flatten.find do |job|
+        job == Support::Jobs::Process::AudioActivityDetection
       end
 
-      expect(job.group).to eq("activity_detection")
+      expect(activity_detection_job.group).to eq("activity_detection")
     end
   end
 end
