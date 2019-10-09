@@ -71,8 +71,8 @@ RSpec.describe Graphene::CreatePipeline do
 
       it "does not save the pipeline and jobs" do
         expect { subject.call(true) }.to raise_error(ActiveRecord::RecordInvalid)
-        expect(Pipeline.count).to eq(0)
-        expect(Jobs::Base.count).to eq(0)
+        expect(Graphene::Pipeline.count).to eq(0)
+        expect(Graphene::Jobs::Base.count).to eq(0)
       end
     end
   end

@@ -14,6 +14,8 @@ ruby("2.6.3")
 
 gemspec
 
+gem "jwt"
+
 # HTTP
 gem "excon"
 gem "faraday"
@@ -36,17 +38,52 @@ gem "sidekiq-failures"
 # Shellout
 gem "terrapin"
 
-# Testing
-group :test do
-  gem "pry"
+# # Testing
+# group :test do
+#   gem "pry"
+#   gem "rspec-rails"
+#   gem "rspec-its"
+#   gem "rspec_junit_formatter"
+#   gem "timecop"
+#   gem "simplecov"
+#   gem "simplecov-console"
+#   gem "rubocop"
+#   gem "warning"
+#   gem "database_cleaner"
+
+# end
+
+group :assets do
+  gem "sass-rails"
+end
+
+group :development, :test do
+  gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "pry-rails"
+  gem "pry-remote"
   gem "rspec-rails"
   gem "rspec-its"
   gem "rspec_junit_formatter"
+  gem "spring-commands-rspec"
+  gem "spring-commands-rubocop"
+  gem "spring-commands-sidekiq"
+  gem "json_matchers"
   gem "timecop"
+  gem "database_cleaner"
+  gem "rubocop"
   gem "simplecov"
   gem "simplecov-console"
-  gem "rubocop"
   gem "warning"
-  gem "database_cleaner"
+  gem "webmock"
+  gem "vcr"
+  gem "rswag-specs"
   gem "factory_bot_rails"
+end
+
+group :development do
+  gem "foreman"
+  gem "zencoder-fetcher"
+  gem "listen", ">= 3.0.5", "< 3.2"
+  gem "spring"
+  gem "spring-watcher-listen", "~> 2.0.0"
 end
