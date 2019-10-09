@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "spec_helper"
+
 RSpec.describe Graphene::AuthenticatedController, :with_auth_token, type: :controller do
   controller Graphene::AuthenticatedController do
     def create
