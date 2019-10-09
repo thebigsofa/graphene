@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe CreatePipeline do
+RSpec.describe Graphene::CreatePipeline do
   subject { described_class.new(params) }
 
   describe "#call" do
