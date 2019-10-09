@@ -14,6 +14,11 @@ ruby("2.6.3")
 
 gemspec
 
+# HTTP
+gem "excon"
+gem "faraday"
+gem "faraday_middleware"
+
 gem "sheaf"
 
 gem "pg"
