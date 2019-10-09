@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe UpdatePipeline do
+RSpec.describe Graphene::UpdatePipeline do
   subject { described_class.new(pipeline, params) }
 
   context "valid parameters" do

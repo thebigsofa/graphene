@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe CancelPipeline do
+RSpec.describe Graphene::CancelPipeline do
   subject { described_class.new(pipeline) }
 
   context "updating pipeline" do

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe PipelineSerializer do
+RSpec.describe Graphene::PipelineSerializer do
   subject { described_class.new(pipeline) }
 
   {
