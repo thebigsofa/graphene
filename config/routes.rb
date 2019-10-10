@@ -30,5 +30,5 @@ Graphene::Engine.routes.draw do
     resources :pipelines, only: [:index, :show]
   end
 
-  get '/status' => 'service_status#status'
+  get "/status" => "service_status#show"
 end
