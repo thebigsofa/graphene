@@ -14,12 +14,9 @@ gemspec
 # your gem to rubygems.org.
 
 # To use a debugger
-# gem 'byebug', group: [:development, :test]
+# gem "byebug", group: [:development, :test]
 
-# gem "sidekiq-pro", source: "https://gems.contribsys.com/"
-# gem "jwt"
-# gem "activerecord_json_validator"
-# gem "terrapin"
+gem "sidekiq-pro", source: "https://gems.contribsys.com/"
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
