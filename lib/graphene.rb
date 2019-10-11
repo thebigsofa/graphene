@@ -20,14 +20,11 @@ module Graphene
   def self.configure
     self.config ||= Config.new
     yield(config)
+    self.config.sidekiq_tracker ||= Graphene::Tracking::Disabled
     self.config.auth_middleware ||= NoAuthentication
   end
 
   class Config
     attr_accessor :sidekiq_tracker, :auth_middleware
-
-    def initialize
-      @sidekiq_tracker = nil
-    end
   end
 end
