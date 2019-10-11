@@ -1,4 +1,4 @@
-class AddIdentifierToJobs < ActiveRecord::Migration[5.2]
+class AddIdentifierToJobs < ActiveRecord::Migration[6.0]
   def change
     remove_index :jobs, name: :index_job_on_field_br
     remove_index :jobs, name: :index_job_on_field_pd

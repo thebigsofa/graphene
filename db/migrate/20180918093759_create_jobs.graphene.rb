@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateJobs < ActiveRecord::Migration[5.2]
+class CreateJobs < ActiveRecord::Migration[6.0]
   def change
     create_table :jobs, id: :uuid do |t|
       t.string(:type, null: false, index: true, default: "Graphene::Jobs::Base")

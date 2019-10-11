@@ -1,4 +1,4 @@
-class AddVersionToJobs < ActiveRecord::Migration[5.2]
+class AddVersionToJobs < ActiveRecord::Migration[6.0]
   def change
     add_column :jobs, :version, :integer, default: 1, null: false, index: true
     add_index :jobs, :version

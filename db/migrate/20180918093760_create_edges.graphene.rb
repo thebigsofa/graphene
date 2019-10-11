@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateEdges < ActiveRecord::Migration[5.2]
+class CreateEdges < ActiveRecord::Migration[6.0]
   def change
     create_table :edges, id: :uuid do |t|
       t.uuid(:origin_id, null: false, index: true)

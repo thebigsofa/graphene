@@ -1,4 +1,4 @@
-class ChangeArtifactIndex < ActiveRecord::Migration[5.2]
+class ChangeArtifactIndex < ActiveRecord::Migration[6.0]
   def change
     remove_index :jobs, :artifacts
     add_index :jobs, "(artifacts->'behavioural_recognition_video_id')", :name => 'index_job_on_field_br'
