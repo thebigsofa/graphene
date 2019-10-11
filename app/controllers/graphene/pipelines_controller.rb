@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Graphene
-  class PipelinesController < AuthenticatedController
+  class PipelinesController < ApplicationController
     def create
       if (@pipeline = CreatePipeline.new(pipeline_params).call).persisted?
         Graphene::Visitors::Sidekiq.new.visit(pipeline)

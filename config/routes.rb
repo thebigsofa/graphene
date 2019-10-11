@@ -1,5 +1,6 @@
 Graphene::Engine.routes.draw do
   require "sidekiq/pro/web"
+  require "sidekiq-status/web"
 
   if Rails.env.production?
     Sidekiq::Web.use Rack::Auth::Basic do |username, password|
