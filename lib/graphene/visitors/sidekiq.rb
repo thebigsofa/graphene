@@ -60,7 +60,7 @@ module Graphene
       private
 
       def tracker
-        @tracker ||= (Graphene.config.sidekiq_tracker || Graphene::Tracking::Disabled)
+        @tracker ||= Graphene.config.sidekiq_tracker
       end
 
       def fail_dependent(job)
