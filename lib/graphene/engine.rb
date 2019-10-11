@@ -22,5 +22,9 @@ module Graphene
         end
       end
     end
+
+    initializer "add_auth_module" do |app|
+      app.config.middleware.use Graphene.config.auth_middleware
+    end
   end
 end
