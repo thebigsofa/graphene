@@ -33,6 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bootstrap4-kaminari-views"
   spec.add_dependency "pg_search"
 
+  spec.add_dependency "activerecord_json_validator"
+
   spec.add_dependency "excon"
   spec.add_dependency "faraday"
   spec.add_dependency "faraday_middleware"
