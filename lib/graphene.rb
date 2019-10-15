@@ -38,7 +38,7 @@ module Graphene
   end
 
   class Config
-    attr_accessor :sidekiq_tracker, :auth_middleware
+    attr_accessor :sidekiq_tracker, :auth_middleware, :mappings_and_priorities
   end
 
   self.configure {}
