@@ -2,8 +2,13 @@
 
 require "graphene/engine"
 require "sidekiq"
-require "pg_search"
 require "activerecord_json_validator"
+
+require "sheaf"
+
+require "kaminari"
+require "bootstrap4-kaminari-views"
+require "pg_search"
 
 module Graphene
   class NoAuthentication
