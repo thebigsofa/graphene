@@ -7,6 +7,13 @@ Graphene.configure do |config|
 
   # A Rack middleware to authenticate Graphene API against
   config.auth_middleware = Graphene::NoAuthentication
+
+  config.mappings_and_priorities = {
+    "default" => {
+      "mapping" => { "simple_job" => [[Jobs::Simple::Job]] },
+      "priorities" => { "simple_job" =>  0 }
+    }
+  }.freeze
 end
 CONFIG
 
@@ -15,7 +22,6 @@ namespace :graphene do
     desc "Create graphene initializer"
     task :config do
 
-      # Step 1: Initializer
       path = Rails.root.join("config/initializers/graphene.rb")
 
       overwrite = false
@@ -30,10 +36,6 @@ namespace :graphene do
       end
 
       puts "Config file created in #{path}"
-
-      # Step 2: Npm packages
-      # TODO: add npm dependencies
-      # puts "All done. Run `yarn install`"
     end
   end
 end
