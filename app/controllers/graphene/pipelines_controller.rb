@@ -3,7 +3,7 @@
 module Graphene
   class PipelinesController < ApplicationController
     def create
-      if (@pipeline = CreatePipeline.new(pipeline_params).call).persisted?
+      if (@pipeline = Graphene::Pipelines::Create.new(pipeline_params).call).persisted?
         Graphene::Visitors::Sidekiq.new.visit(pipeline)
         render(status: :created, json: pipeline_to_json)
       else
@@ -16,7 +16,7 @@ module Graphene
     end
 
     def update
-      if UpdatePipeline.new(pipeline, pipeline_params).call
+      if Graphene::Pipelines::Update.new(pipeline, pipeline_params).call
         render(json: pipeline_to_json)
       else
         render(status: :unprocessable_entity, json: { errors: pipeline.errors }.to_json)
@@ -27,13 +27,13 @@ module Graphene
       render(
         json: {
           pipeline_id: pipeline.id,
-          is_locked: LockedPipeline.new(pipeline).call
+          is_locked: Graphene::Pipelines::Locked.new(pipeline).call
         }
       )
     end
 
     def cancel
-      if CancelPipeline.new(pipeline).call
+      if Graphene::Pipelines::Cancel.new(pipeline).call
         render(json: pipeline_to_json)
       else
         render(status: :unprocessable_entity, json: { errors: pipeline.errors }.to_json)
@@ -47,11 +47,11 @@ module Graphene
     end
 
     def pipeline
-      @pipeline ||= Pipeline.find(params[:id])
+      @pipeline ||= Graphene::Pipeline.find(params[:id])
     end
 
     def pipeline_to_json
-      PipelineSerializer.new(pipeline.reload).to_json
+      Graphene::PipelineSerializer.new(pipeline.reload).to_json
     end
   end
 end
