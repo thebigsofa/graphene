@@ -10,11 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery/dist/jquery
-//= require bootstrap/dist/js/bootstrap
-//= require viz.js/viz
-//= require viz.js/full.render
-//= require renderjson/renderjson
 //= require rails-ujs
 //= require_tree .
 
