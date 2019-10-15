@@ -21,7 +21,7 @@ module Graphene
       private
 
       def perform
-        Graphene::SidekiqTrackingJob.perform_in(10.seconds, name) unless too_many_jobs?
+        Graphene.config.sidekiq_tracker.perform_in(10.seconds, name) unless too_many_jobs?
       end
 
       def too_many_jobs?
