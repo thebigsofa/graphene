@@ -46,7 +46,7 @@ module Graphene
                through: :parent_edges,
                source: :origin
 
-      belongs_to :pipeline, touch: true
+      belongs_to :pipeline, touch: true, class_name: "Graphene::Pipeline"
 
       scope :version, ->(version) { where(version: version) }
 
