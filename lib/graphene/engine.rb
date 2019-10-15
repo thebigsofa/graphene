@@ -9,10 +9,10 @@ module Graphene
 
     config.autoload_paths << File.expand_path("../", __dir__)
 
-    require "graphene/services/cancel_pipeline"
-    require "graphene/services/create_pipeline"
-    require "graphene/services/locked_pipeline"
-    require "graphene/services/update_pipeline"
+    # require "graphene/services/cancel_pipeline"
+    # require "graphene/services/create_pipeline"
+    # require "graphene/services/locked_pipeline"
+    # require "graphene/services/update_pipeline"
     require "graphene/serializers/pipeline_serializer"
 
     initializer :append_migrations do |app|
