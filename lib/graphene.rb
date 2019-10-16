@@ -9,6 +9,9 @@ require "kaminari"
 require "bootstrap4-kaminari-views"
 require "pg_search"
 
+require "sidekiq"
+require "sidekiq/throttled"
+
 module Graphene
   class NoAuthentication
     def initialize(app)

@@ -19,6 +19,7 @@ gemspec
 gem "sidekiq-pro", source: "https://gems.contribsys.com/"
 
 group :development, :test do
+  gem "factory_bot"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "pry-rails"
   gem "pry-remote"
