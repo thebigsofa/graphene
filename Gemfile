@@ -1,61 +1,25 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby("2.6.3")
-
-# # Bundler no longer treats runtime dependencies as base dependencies.
-# # The following code restores this behaviour.
-# # (See https://github.com/carlhuda/bundler/issues/1041)
-# spec = Bundler.load_gemspec(Dir["./{,*}.gemspec"].first)
-# spec.runtime_dependencies.each do |dependency|
-#   gem dependency.name, *(dependency.requirement.as_list)
-# end
-
+# Declare your gem's dependencies in graphene.gemspec.
+# Bundler will treat runtime dependencies like base dependencies, and
+# development dependencies will be added by default to the :development group.
 gemspec
 
-gem "jwt"
+# Declare any dependencies that are still in development here instead of in
+# your gemspec. These might include edge Rails or gems from your path or
+# Git. Remember to move these dependencies to your gemspec before releasing
+# your gem to rubygems.org.
 
-# HTTP
-gem "excon"
-gem "faraday"
-gem "faraday_middleware"
+# To use a debugger
+# gem 'byebug', group: [:development, :test]
 
-gem "sheaf"
-
-gem "pg"
-gem "pg_search"
-gem "hiredis"
-
-gem "activerecord_json_validator"
-
-# Job processing
-gem "sidekiq-pro", source: "https://gems.contribsys.com/"
-gem "sidekiq-throttled"
-gem "sidekiq-status"
-gem "sidekiq-failures"
-
-# Shellout
-gem "terrapin"
-
-# # Testing
-# group :test do
-#   gem "pry"
-#   gem "rspec-rails"
-#   gem "rspec-its"
-#   gem "rspec_junit_formatter"
-#   gem "timecop"
-#   gem "simplecov"
-#   gem "simplecov-console"
-#   gem "rubocop"
-#   gem "warning"
-#   gem "database_cleaner"
-
-# end
-
-group :assets do
-  gem "sass-rails"
-end
+# gem "sidekiq-pro", source: "https://gems.contribsys.com/"
+# gem "jwt"
+# gem "activerecord_json_validator"
+# gem "terrapin"
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -77,7 +41,6 @@ group :development, :test do
   gem "webmock"
   gem "vcr"
   gem "rswag-specs"
-  gem "factory_bot_rails"
 end
 
 group :development do

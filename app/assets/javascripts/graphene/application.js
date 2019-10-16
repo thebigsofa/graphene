@@ -34,4 +34,3 @@ $(document).ready(function() {
     $(el).replaceWith(renderjson($.parseJSON($(el).text())));
   });
 });
-
