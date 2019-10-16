@@ -1,27 +1,29 @@
 # frozen_string_literal: true
 
-class SidekiqController < ApplicationController
-  def queue_data
-    render(json: queue_json)
-  end
+module Graphene
+  class SidekiqController < ApplicationController
+    def queue_data
+      render(json: queue_json)
+    end
 
-  private
+    private
 
-  def queue_json
-    {
-      queues: queue_array
-    }
-  end
-
-  # :reek:FeatureEnvy
-  def queue_array
-    Sidekiq::Queue.all.map do |queue|
-      stats = Sidekiq::Queue.new(queue.name)
+    def queue_json
       {
-        name: stats.name,
-        size: stats.size,
-        latency: stats.latency
+        queues: queue_array
       }
+    end
+
+    # :reek:FeatureEnvy
+    def queue_array
+      Sidekiq::Queue.all.map do |queue|
+        stats = Sidekiq::Queue.new(queue.name)
+        {
+          name: stats.name,
+          size: stats.size,
+          latency: stats.latency
+        }
+      end
     end
   end
 end

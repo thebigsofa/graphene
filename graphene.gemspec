@@ -1,4 +1,6 @@
-$:.push File.expand_path("lib", __dir__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push(File.expand_path("lib", __dir__))
 
 # Maintain your gem's version:
 require "graphene/version"
@@ -34,18 +36,18 @@ Gem::Specification.new do |spec|
   # s.add_dependency "faraday_middleware"
 
   # Database
-  s.add_dependency "pg", ">= 0.18", "< 2.0"
-  s.add_dependency "hiredis"
+  s.add_dependency("pg", ">= 0.18", "< 2.0")
+  s.add_dependency("hiredis")
 
   # Job processing
-  s.add_dependency "sidekiq-pro"
-  s.add_dependency "sidekiq-throttled"
-  s.add_dependency "sidekiq-status"
-  s.add_dependency "sidekiq-failures"
+  s.add_dependency("sidekiq-pro")
+  s.add_dependency("sidekiq-throttled")
+  s.add_dependency("sidekiq-status")
+  s.add_dependency("sidekiq-failures")
 
   # Shellout
-  s.add_dependency "terrapin"
+  s.add_dependency("terrapin")
 
   # Task processing
-  s.add_dependency "sheaf"
+  s.add_dependency("sheaf")
 end

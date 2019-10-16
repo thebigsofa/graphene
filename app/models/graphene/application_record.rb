@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class ApplicationRecord < ActiveRecord::Base
-  include GlobalID::Identification
+module Graphene
+  class ApplicationRecord < ActiveRecord::Base
+    include GlobalID::Identification
 
-  self.abstract_class = true
+    self.abstract_class = true
+  end
 end

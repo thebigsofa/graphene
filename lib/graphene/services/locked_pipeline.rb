@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
-class LockedPipeline
-  FINAL_STATES = %w[complete failed].freeze
+module Graphene
+  class LockedPipeline
+    FINAL_STATES = %w[complete failed].freeze
 
-  def initialize(pipeline)
-    @pipeline = pipeline
-  end
+    def initialize(pipeline)
+      @pipeline = pipeline
+    end
 
-  def call
-    pipeline_locked?
-  end
+    def call
+      pipeline_locked?
+    end
 
-  private
+    private
 
-  attr_reader :pipeline
+    attr_reader :pipeline
 
-  def pipeline_locked?
-    (pipeline.jobs.pluck(:state).uniq - FINAL_STATES).any?
+    def pipeline_locked?
+      (pipeline.jobs.pluck(:state).uniq - FINAL_STATES).any?
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "graphene/engine"
 
 module Graphene

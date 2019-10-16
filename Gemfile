@@ -1,4 +1,6 @@
-ruby "2.6.3"
+# frozen_string_literal: true
+
+ruby("2.6.3")
 
 gemspec
 
@@ -14,4 +16,5 @@ group :test do
   gem "timecop"
   gem "simplecov"
   gem "simplecov-console"
+  gem "rubocop"
 end
