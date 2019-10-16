@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
-class CancelPipeline
-  attr_reader :pipeline
+module Graphene
+  class CancelPipeline
+    attr_reader :pipeline
 
-  def initialize(pipeline)
-    @pipeline = pipeline
-  end
+    def initialize(pipeline)
+      @pipeline = pipeline
+    end
 
-  def call
-    return false unless pipeline_updated?
+    def call
+      return false unless pipeline_updated?
 
-    true
-  end
+      true
+    end
 
-  private
+    private
 
-  def pipeline_updated?
-    ActiveRecord::Base.transaction do
-      pipeline.jobs.each(&:cancel!)
+    def pipeline_updated?
+      ActiveRecord::Base.transaction do
+        pipeline.jobs.each(&:cancel!)
+      end
     end
   end
 end

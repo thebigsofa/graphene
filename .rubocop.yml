@@ -1,0 +1,54 @@
+AllCops:
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - config/**/*
+    - vendor/**/*
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: compact, expanded
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
+# SupportedStyles: single_quotes, double_quotes
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Bundler/OrderedGems: # We prefer to have them groupped by category.
+  Enabled: false
+
+# Allows having 2 side by side windows at 13 pt font on a 15" MBP (code and test).
+Metrics/LineLength:
+  Max: 94
+  Exclude:
+    - spec/**/*_spec.rb
+  IgnoredPatterns: ['".*"$']
+
+Metrics/BlockLength:
+  ExcludedMethods: ["describe", "context", "shared_context"]
+  Exclude:
+    - spec/**/*
+
+Gemspec/OrderedDependencies:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  IgnoredMethods: ["gem", "puts", "require", "source", "add_development_dependency", "add_runtime_dependency", "run", "require_relative", "raise", "fail", "status", "body", "use", "to", "not_to", "describe", "it", "shared_context", "around", "hook_into", "mock_with", "expect_with"]
+
+# https://blog.bigbinary.com/2012/01/08/alias-vs-alias-method.html
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Naming/AccessorMethodName:
+    Exclude:
+      - app/lib/big_sofa/client.rb
