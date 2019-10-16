@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-RSpec.describe Graph::JobTemplate do
+RSpec.describe Graphene::Graph::JobTemplate do
   let(:pipeline) { build(:pipeline) }
-  let(:job_klass) { Jobs::Base }
+  let(:job_klass) { Graphene::Jobs::Base }
 
   context "given a group name" do
     let(:group) { "foo" }

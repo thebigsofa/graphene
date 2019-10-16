@@ -17,4 +17,7 @@ group :test do
   gem "simplecov"
   gem "simplecov-console"
   gem "rubocop"
+  gem "warning"
+  gem "database_cleaner"
+  gem "factory_bot"
 end
