@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0.0"
 
-    # HTTP
+  # HTTP
   # s.add_dependency "excon"
   # s.add_dependency "faraday"
   # s.add_dependency "faraday_middleware"
