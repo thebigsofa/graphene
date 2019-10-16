@@ -23,16 +23,18 @@ module Graphene
     pg_search_scope :search, against: %i[id params]
 
     has_many :jobs, ->(pipeline) { version(pipeline.version) }, class_name: "Graphene::Jobs::Base"
-    has_many :all_jobs, class_name: "Graphene::Jobs::Base"
+    has_many :all_jobs, class_name: "Graphene::Jobs::Base", dependent: :destroy
 
     has_many :children, ->(pipeline) { version(pipeline.version).without_parents }, class_name: "Graphene::Jobs::Base"
 
-    validates :params,
-              presence: true,
-              json: {
-                schema: :params_json_schema,
-                message: ->(errors) { errors }
-              }
+    validates(
+      :params,
+      presence: true,
+      json: {
+        schema: :params_json_schema,
+        message: ->(errors) { errors }
+      }
+    )
 
     after_commit :notify_callbacks!, only: [:update]
 

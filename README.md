@@ -9,6 +9,26 @@ Add the following to your gemfile:
 gem "graphene", github: "https://github.com/thebigsofa/graphene"
 ```
 
+Run the bundle command:
+```bash
+bundle install
+```
+
+Install default initializer configuration:
+```bash
+rake graphene:install:config
+```
+
+Run the migrations (this will only run graphene migrations)
+```bash
+rake db:migrate SCOPE=graphene
+```
+
+or run all the app's migrations:
+```bash
+rake db:migrate
+```
+
 ## Configuration
 Graphene provides a mechanism configure certain aspects of it. Create an initializer called `graphene.rb` in your initializers folder with the following:
 ```ruby
@@ -16,7 +36,7 @@ Graphene.configure do |config|
 end
 ```
 ### Authentication
-By default, there is no authentication provided however you can plug in your own authentication middleware (rack middleware). 
+By default, there is no authentication provided however you can plug in your own authentication middleware (rack middleware).
 ```ruby
 Graphene.configure do |config|
   config.auth_middleware = MyAuthClass
