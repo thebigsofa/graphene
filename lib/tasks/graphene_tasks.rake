@@ -1,6 +1,31 @@
 # frozen_string_literal: true
 
 DEFAULT_GRAPHENE_CONFIG = <<-CONFIG
+ENV["REDIS_URL"] ||= "redis://redis:6379"
+ENV["REDIS_DB"] ||= "1"
+
+require "sidekiq"
+require "sidekiq/throttled"
+Sidekiq::Throttled.setup!
+Sidekiq::Client.reliable_push! unless Rails.env.test?
+
+Redis.current = Redis.new(db: ENV.fetch("REDIS_DB"))
+
+redis_url = "\#{ENV.fetch("REDIS_URL")}/\#{ENV.fetch("REDIS_DB")}"
+
+Sidekiq.configure_server do |config|
+  config.redis = { url: redis_url }
+  config.super_fetch!
+  config.reliable_scheduler!
+  config.server_middleware do |chain|
+    chain.add(Graphene.config.sidekiq_callbacks_middleware)
+  end
+end
+
+Sidekiq.configure_client do |config|
+  config.redis = { url: redis_url }
+end
+
 Graphene.configure do |config|
   # Sidekiq job to send metrics for Siekiq autoscaling
   config.sidekiq_tracker = Graphene::JobsTrackingDisabled
@@ -8,10 +33,12 @@ Graphene.configure do |config|
   # A Rack middleware to authenticate Graphene API against
   config.auth_middleware = Graphene::NoAuthentication
 
+  config.sidekiq_callbacks_middleware = Graphene::SidekiqCallbacksMiddleware
+
   config.mappings_and_priorities = {
     "default" => {
-      "mapping" => { "simple_job" => [[Jobs::Simple::Job]] },
-      "priorities" => { "simple_job" =>  0 }
+      "mapping" => { "simple_job" => [[Jobs::Simple::Job]] }, # replace with jobs mapping
+      "priorities" => { "simple_job" =>  0 } # replace with real priorities mapping
     }
   }.freeze
 end

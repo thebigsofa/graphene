@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "graphene/engine"
-require "sidekiq"
 require "activerecord_json_validator"
 
 require "sheaf"
@@ -28,6 +27,12 @@ module Graphene
       ::Sidekiq.logger.info("Sidekiq tracking is disabled.")
     end
   end
+
+  class SidekiqCallbacksMiddleware
+    def call(worker, _msg, queue)
+      yield
+    end
+  end
 end
 
 module Graphene
@@ -40,10 +45,16 @@ module Graphene
     yield(config)
     self.config.sidekiq_tracker ||= Graphene::JobsTrackingDisabled
     self.config.auth_middleware ||= Graphene::NoAuthentication
+    self.config.sidekiq_callbacks_middleware ||= Graphene::SidekiqCallbacksMiddleware
   end
 
   class Config
-    attr_accessor :sidekiq_tracker, :auth_middleware, :mappings_and_priorities
+    attr_accessor(
+      :sidekiq_tracker,
+      :auth_middleware,
+      :mappings_and_priorities,
+      :sidekiq_callbacks_middleware
+    )
   end
 
   self.configure {}
