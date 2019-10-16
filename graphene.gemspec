@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   s.add_dependency("hiredis")
 
   # Job processing
-  s.add_dependency("sidekiq-pro")
+  # s.add_dependency("sidekiq-pro")
   s.add_dependency("sidekiq-throttled")
   s.add_dependency("sidekiq-status")
   s.add_dependency("sidekiq-failures")
