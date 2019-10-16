@@ -50,18 +50,3 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency("sheaf")
 end
-
-
-
-# frozen_string_literal: true
-
-# $LOAD_PATH.push(File.expand_path("lib", __dir__))
-
-
-
-# # Describe your gem and declare its dependencies:
-# Gem::Specification.new do |s|
-#   # Shellout
-#   s.add_dependency("terrapin")
-
-# end
