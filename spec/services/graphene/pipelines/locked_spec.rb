@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Graphene::LockedPipeline do
+RSpec.describe Graphene::Pipelines::Locked do
   subject(:klass) { described_class.new(pipeline) }
 
   let(:pipeline) { create(:pipeline) }
