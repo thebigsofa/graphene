@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+require_dependency "graphene/application_controller"
 
 module Graphene
   module Ui
     class PipelinesController < ActionController::Base
-      layout "application"
+      layout "graphene/application"
 
       before_action :authenticate!
 

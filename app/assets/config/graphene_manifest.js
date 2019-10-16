@@ -1,2 +1,2 @@
-//= link_directory ../stylesheets/graphene .css
-//= link_directory ../javascripts/graphene .js
+//= link_directory ../stylesheets/graphene/application.css
+//= link_directory ../javascripts/graphene/application.js
