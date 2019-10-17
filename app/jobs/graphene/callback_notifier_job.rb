@@ -3,26 +3,26 @@
 module Graphene
   class CallbackNotifierJob
     include Sidekiq::Worker
-    require_relative "../lib/big_sofa/auth_middleware"
-    FARRADAY_ERRORS = [::Faraday::ResourceNotFound, ::Faraday::TimeoutError].freeze
+    # require_relative "../lib/big_sofa/auth_middleware"
+    # FARRADAY_ERRORS = [::Faraday::ResourceNotFound, ::Faraday::TimeoutError].freeze
 
     sidekiq_options(queue: :pipeline_poll, backtrace: true, retry: false)
 
     MAX_RETRIES = 5
 
     def perform(pipeline_id, callback, retries = 0)
-      return if Graphene::CallbackAggregate.count_for(pipeline_id) < 1
+      # return if Graphene::CallbackAggregate.count_for(pipeline_id) < 1
 
-      Graphene::CallbackAggregate.clear(pipeline_id)
+      # Graphene::CallbackAggregate.clear(pipeline_id)
 
-      pipeline = Pipeline.find(pipeline_id)
-      url = callback.fetch("url")
-      connection(url, callback).post(URI(url).path) do |req|
-        req.body = PipelineSerializer.new(pipeline)
-        req.headers.merge!(callback.fetch("headers", {}))
-      end
-    rescue *FARRADAY_ERRORS => e
-      handle_error(pipeline, callback, e, retries)
+      # pipeline = Pipeline.find(pipeline_id)
+      # url = callback.fetch("url")
+      # connection(url, callback).post(URI(url).path) do |req|
+      #   req.body = PipelineSerializer.new(pipeline)
+      #   req.headers.merge!(callback.fetch("headers", {}))
+      # end
+    # rescue *FARRADAY_ERRORS => e
+    #   handle_error(pipeline, callback, e, retries)
     end
 
     private
