@@ -3,7 +3,13 @@
 require "spec_helper"
 
 RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controller do
+  routes { Graphene::Engine.routes }
+
   let(:time) { Time.now }
+
+  let(:data) do
+    { simple: [1,2,3,4], smooth: 3.14 }
+  end
 
   describe "POST /pipelines" do
     let(:params) do
@@ -109,7 +115,7 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
       let(:job) { pipeline.children.first }
 
       before do
-        pipeline.add_graph([Support::Jobs::Transform::Zencoder]).each(&:save!)
+        pipeline.add_graph([Jobs::Simple]).each(&:save!)
         pipeline.children.first.fail!(StandardError.new("foobar"))
         request.headers.merge!(headers)
         Timecop.freeze(time) do
@@ -146,7 +152,7 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     end
 
     before do
-      pipeline.add_graph([Jobs::Transform::Zencoder]).each(&:save!)
+      pipeline.add_graph([Jobs::Simple]).each(&:save!)
       child_state
       request.headers.merge!(headers)
       Timecop.freeze(time) do
@@ -178,28 +184,15 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
   describe "PUT /pipelines/:id/cancel" do
     let(:expected_response) do
       Timecop.freeze(time) do
-        PipelineSerializer.new(Pipeline.first).to_json
+        Graphene::PipelineSerializer.new(Graphene::Pipeline.first).to_json
       end
     end
 
     let(:pipeline_params) do
       {
-        jobs: %w[
-          video_activity_detection
-          extract_md5
-        ],
-        video_activity_detection: {
-          media_uid: TEST_MEDIA_UID,
-          video_detection_threshold: 0.000027,
-          video_collation_threshold: 0.5
-        },
-        extract_md5: {
-          media_uid: TEST_MEDIA_UID,
-          source: {
-            url: "http://localhost:3000/api/v2/sidecar/redirect?file=media&signature=ee26429e5f566ac48b5d63c4684efb965a90e8c8482e11e95a1600c09f39ea2b&type=media&uid=893556&url_format=standard",
-            filename: "video.mp4"
-          }
-        },
+        jobs: %w[simple smooth],
+        simple: { data: data },
+        smooth: { data: data },
         callbacks: [{}]
       }
     end
@@ -208,12 +201,12 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
       create(:pipeline, params: pipeline_params)
     end
 
-    let!(:video_activity_detection_job) do
-      create(:job, :video_activity_detection, state: :in_progress, pipeline: pipeline)
+    let!(:simple_job) do
+      create(:job, :simple, state: :in_progress, pipeline: pipeline)
     end
 
-    let!(:extract_md5_job) do
-      create(:job, :extract_md5, state: :pending, pipeline: pipeline)
+    let!(:smooth_job) do
+      create(:job, :smooth, state: :pending, pipeline: pipeline)
     end
 
     before do
