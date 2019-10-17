@@ -5,19 +5,16 @@ require "spec_helper"
 RSpec.describe Graphene::Pipelines::Create do
   subject { described_class.new(params) }
 
+  let(:data) do
+    { simple: [1,2,3,4], smooth: 3.14 }
+  end
+
   describe "#call" do
     context "valid params" do
       let(:params) do
         {
-          "jobs" => ["encode"],
-          "encode" => {
-            "media_uid" => TEST_MEDIA_UID,
-            "source" => {},
-            "callbacks" => {},
-            "encode_options" => {},
-            "type" => "upload",
-            "project_uid" => "abc123"
-          }
+          "jobs" => ["simple"],
+          "simple" => { data: data }
         }
       end
 
@@ -32,7 +29,7 @@ RSpec.describe Graphene::Pipelines::Create do
     context "missing top-level params" do
       let(:params) do
         {
-          "jobs" => ["encode"]
+          "jobs" => ["simple"]
         }
       end
 
@@ -48,8 +45,8 @@ RSpec.describe Graphene::Pipelines::Create do
     context "missing second-level params" do
       let(:params) do
         {
-          "jobs" => ["encode"],
-          "encode" => {}
+          "jobs" => ["simple"],
+          "simple" => {}
         }
       end
 
@@ -65,7 +62,7 @@ RSpec.describe Graphene::Pipelines::Create do
     context "missing params with raise_error flat" do
       let(:params) do
         {
-          "jobs" => ["encode"]
+          "jobs" => ["simple"]
         }
       end
 
