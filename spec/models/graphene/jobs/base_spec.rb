@@ -341,16 +341,16 @@ RSpec.describe Graphene::Jobs::Base do
     context "mixed types" do
       let(:graph) do
         [
-          Graphene::Jobs::Base,
-          Support::Jobs::DoNothing
+          Jobs::Simple,
+          Jobs::Smooth
         ]
       end
 
       let(:root) { described_class.from_graph(graph, pipeline: pipeline).first }
 
       it "sets the correct types" do
-        expect(root).to be_kind_of(Graphene::Jobs::Base)
-        expect(root.children.first).to be_kind_of(Support::Jobs::DoNothing)
+        expect(root).to be_kind_of(Jobs::Simple)
+        expect(root.children.first).to be_kind_of(Jobs::Smooth)
       end
 
       it "assigns the pipeline's version to each job" do
