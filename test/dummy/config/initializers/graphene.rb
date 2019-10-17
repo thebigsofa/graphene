@@ -35,11 +35,17 @@ Graphene.configure do |config|
   config.mappings_and_priorities = {
     "default" => {
       "mapping" => {
+        "encode" => [[Jobs::Encode]],
         "simple" => [[Jobs::Simple]],
         "smooth" => [[Jobs::Smooth]],
         "unite_data" => [[Jobs::UniteData]]
       },
-      "priorities" => { "simple" => 0, "smooth" => 1, "unite_data" => 2 }
+      "priorities" => {
+        "simple" => 0,
+        "smooth" => 1,
+        "unite_data" => 2,
+        "encode" => 3
+      }
     }
   }.freeze
 end

@@ -22,7 +22,6 @@ if ENV["CIRCLE_ARTIFACTS"]
 end
 
 [
-  "spec/support/jobs/**/*.rb",
   "spec/support/initializers/**/*.rb",
   "spec/support/helpers/**/*.rb",
   "spec/support/shared_contexts/**/*.rb",
