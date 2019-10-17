@@ -41,7 +41,11 @@ module Graphene
         return unless changed_params.include?(:jobs)
 
         pipeline.increment_version_and_add_graph(
-          Graph::Builder.new(params.fetch(:jobs)).to_graph
+          Graphene::Graph::Builder.new(
+            params.fetch(:jobs),
+            mapping: Graphene::Pipelines::Config.mapping(params),
+            priorities: Graphene::Pipelines::Config.priorities(params)
+          ).to_graph
         )
       end
 

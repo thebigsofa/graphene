@@ -79,7 +79,12 @@ module Graphene
               from_graph(edge, children: memo, pipeline: pipeline).first
             end
           else
-            [job.new(children: memo, pipeline: pipeline, version: pipeline.version)]
+            # [job.new(children: memo, pipeline: pipeline, version: pipeline.version)]
+            # TODO: This is super weird.
+            # Why the above stopped working????
+            jj = Graphene::Jobs::Base.new(type: "#{job}", children: memo, pipeline: pipeline, version: pipeline.version)
+            jj.valid?
+            [jj]
           end
         end
       end
