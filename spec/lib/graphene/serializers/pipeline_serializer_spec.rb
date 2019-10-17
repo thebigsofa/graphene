@@ -51,14 +51,16 @@ RSpec.describe Graphene::PipelineSerializer do
   describe "to_json" do
     let(:audit_params) do
       {
-        "media_uid" => "a03qq7",
+        "media_uid" => "0e6a96f5ba8c",
         "jobs" => ["encode"],
         "controller" => "pipelines",
         "action" => "create",
         "pipeline" => {}
       }
     end
+
     let(:pipeline) { create(:pipeline, audit_params: audit_params) }
+
     let(:time) { Time.now }
 
     let(:serialized) do
@@ -72,11 +74,11 @@ RSpec.describe Graphene::PipelineSerializer do
         "version" => 1,
         "state" => "in_progress",
         "jobs" => {
-          "base" => {
+          "simple" => {
             "version" => 1,
             "errors" => [],
             "state" => "in_progress",
-            "children" => %w[zencoder duration_filter],
+            "children" => %w[smooth encode],
             "parents" => [],
             "audits" => [
               {
@@ -84,33 +86,33 @@ RSpec.describe Graphene::PipelineSerializer do
                 "version" => 1,
                 "from" => "pending",
                 "to" => "in_progress",
-                "job" => "Jobs::Base",
+                "job" => "Jobs::Simple",
                 "job_id" => root.id,
                 "timestamp" => time.as_json
               }
             ],
             "artifacts" => {}
           },
-          "duration_filter" => {
+          "smooth" => {
             "version" => 1,
             "errors" => [],
             "state" => "pending",
             "children" => [],
-            "parents" => ["base"],
+            "parents" => ["simple"],
             "audits" => [],
             "artifacts" => {}
           },
-          "zencoder" => {
+          "encode" => {
             "version" => 1,
             "errors" => [],
             "state" => "pending",
             "children" => [],
-            "parents" => ["base"],
+            "parents" => ["simple"],
             "audits" => [],
             "artifacts" => {}
           }
         },
-        "params" => attributes_for(:pipeline).fetch(:params).stringify_keys,
+        "params" => pipeline.params.stringify_keys,
         "audits" => [{
           "params" => audit_params,
           "timestamp" => time.as_json
@@ -120,10 +122,10 @@ RSpec.describe Graphene::PipelineSerializer do
 
     let(:graph) do
       [
-        Graphene::Jobs::Base,
+        Jobs::Simple,
         [
-          [Support::Jobs::Transform::Zencoder],
-          [Support::Jobs::QA::DurationFilter]
+          [Jobs::Smooth],
+          [Jobs::Encode]
         ]
       ]
     end
