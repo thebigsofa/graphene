@@ -103,9 +103,8 @@ module Graphene
       jobs.each do |job|
         next unless (source = from[job.class])
 
-        attrs = source
-                .attributes
-                .except("id", "type", "version", "created_at", "updated_at")
+        excluded_attributes = %w[id type version created_at updated_at]
+        attrs = source.attributes.except(*excluded_attributes)
 
         job.assign_attributes(attrs)
       end
