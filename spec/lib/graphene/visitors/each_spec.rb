@@ -5,17 +5,17 @@ require "spec_helper"
 RSpec.describe Graphene::Visitors::Each do
   let(:graph) do
     [
-      Jobs::Base,
+      Graphene::Jobs::Base,
       [
-        [Jobs::Base],
-        [Jobs::Base]
+        [Graphene::Jobs::Base],
+        [Graphene::Jobs::Base]
       ],
-      Jobs::Base
+      Graphene::Jobs::Base
     ]
   end
 
   let(:root) do
-    Jobs::Base.from_graph(graph, pipeline: build(:pipeline)).first
+    Graphene::Jobs::Base.from_graph(graph, pipeline: build(:pipeline)).first
   end
 
   context "persisted graph" do
