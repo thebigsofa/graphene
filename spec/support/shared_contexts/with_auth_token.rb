@@ -15,11 +15,12 @@ RSpec.shared_context :with_auth_token do
   end
 
   let(:auth_token) do
-    JWT.encode(
-      auth_payload,
-      OpenSSL::PKey::RSA.new(Base64.decode64(ENV["JWT_RSA_PRIVATE"])),
-      ENV["JWT_ALGORITHM"]
-    )
+    # JWT.encode(
+    #   auth_payload,
+    #   OpenSSL::PKey::RSA.new(Base64.decode64(ENV["JWT_RSA_PRIVATE"])),
+    #   ENV["JWT_ALGORITHM"]
+    # )
+    "fake-token"
   end
 
   let(:headers) do
