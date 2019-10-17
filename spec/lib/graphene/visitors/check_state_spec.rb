@@ -18,7 +18,7 @@ RSpec.describe Graphene::Visitors::CheckState do
           Graphene::Jobs::Base
         ]
       ],
-      Support::Jobs::Transform::Zencoder
+      Jobs::Simple
     ]
   end
 
