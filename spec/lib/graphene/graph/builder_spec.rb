@@ -5,6 +5,48 @@ require "spec_helper"
 RSpec.describe Graphene::Graph::Builder do
   subject { described_class.new(jobs, mapping: mapping, priorities: priorities) }
 
+  module Support
+    module Jobs
+      module QA
+        class DuplicateFilter < ::Jobs::Simple
+        end
+
+        class DurationFilter < ::Jobs::Simple
+        end
+
+        class AdultContentFilter < ::Jobs::Simple
+        end
+      end
+
+      module Transform
+        class Zencoder < ::Jobs::Simple
+        end
+      end
+
+      module Process
+        class VideoActivityDetection < ::Jobs::Simple
+        end
+        class ExtractFrames < ::Jobs::Simple
+        end
+        class ExtractMetadata < ::Jobs::Simple
+        end
+        class GenerateThumbnails < ::Jobs::Simple
+        end
+        class AudioActivityDetection < ::Jobs::Simple
+        end
+      end
+
+      module Analysis
+        class BehaviouralRecognition < ::Jobs::Simple
+        end
+
+        class PeopleDetection < ::Jobs::Simple
+        end
+      end
+    end
+  end
+
+
   let(:mapping) do
     {
       "duplicate_filter" => [
