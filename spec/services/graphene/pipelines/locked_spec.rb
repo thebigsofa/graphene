@@ -8,7 +8,7 @@ RSpec.describe Graphene::Pipelines::Locked do
   let(:pipeline) { create(:pipeline) }
 
   before do
-    pipeline.add_graph([Jobs::Transform::Zencoder]).each(&:save!)
+    pipeline.add_graph([Jobs::Simple]).each(&:save!)
     child_state
   end
 
