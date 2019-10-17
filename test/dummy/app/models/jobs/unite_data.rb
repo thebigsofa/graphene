@@ -1,6 +1,6 @@
 module Jobs
   module Tasks
-    class Simple
+    class UniteData
       include Graphene::Tasks::Task
 
       def initialize(data:)
@@ -8,14 +8,14 @@ module Jobs
       end
 
       def call
-        yield(data[:simple])
+        yield("-#{data[:simple]}|#{data[:smooth]}-")
       end
     end
   end
 
-  class Simple < Graphene::Jobs::Base
+  class UniteData < Graphene::Jobs::Base
     STACK = Graphene::Stack[
-      Jobs::Tasks::Simple
+      Jobs::Tasks::UniteData
     ]
   end
 end

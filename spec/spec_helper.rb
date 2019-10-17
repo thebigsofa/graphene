@@ -34,12 +34,6 @@ end
   end
 end
 
-TEST_MEDIA_UID = "841841"
-TEST_IMAGE_UID = "e1d81c"
-TEST_PROJECT_UID = "39c1ac"
-VIDEO_SOURCE_URL = "http://localhost:3000/api/v2/sidecar/redirect?file=media&signature=e09b10f1b5254da6b49717667c980ab11d5e87ba44895079f5a32f44ba25153b&type=media&uid=841841&url_format=standard"
-IMAGE_SOURCE_URL = "http://localhost:3000/api/v2/sidecar/redirect?file=media&signature=f99bc8829002e7bde863a2bed66762973fad116212819f3524b49c200f50e771&type=media&uid=e1d81c&url_format=standard"
-
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!

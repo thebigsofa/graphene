@@ -34,8 +34,12 @@ Graphene.configure do |config|
 
   config.mappings_and_priorities = {
     "default" => {
-      "mapping" => { "simple_job" => [[Jobs::Simple::Job]] }, # replace with jobs mapping
-      "priorities" => { "simple_job" =>  0 } # replace with real priorities mapping
+      "mapping" => {
+        "simple" => [[Jobs::Simple]],
+        "smooth" => [[Jobs::Smooth]],
+        "unite_data" => [[Jobs::UniteData]]
+      },
+      "priorities" => { "simple" => 0, "smooth" => 1, "unite_data" => 2 }
     }
   }.freeze
 end

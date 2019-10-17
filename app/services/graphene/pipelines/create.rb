@@ -26,17 +26,9 @@ module Graphene
       def graph
         @graph ||= Graphene::Graph::Builder.new(
           params[:jobs],
-          mapping: mappings_and_priorities["mapping"],
-          priorities: mappings_and_priorities["priorities"]
+          mapping: Graphene::Pipelines::Config.mapping(params),
+          priorities: Graphene::Pipelines::Config.priorities(params)
         ).to_graph
-      end
-
-      def mappings_and_priorities
-        Graphene.config.mappings_and_priorities.fetch(
-          params[:mappings_and_priorities] || "default"
-        )
-      rescue KeyError
-        raise "No `#{params[:mappings_and_priorities]}` mappings_and_priorities configuration"
       end
 
       def audit
