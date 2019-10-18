@@ -38,7 +38,7 @@ RSpec.describe Graphene::Pipeline do
   end
 
   describe "#increment_version_and_add_graph" do
-    let(:graph) { [Graphene::Jobs::Base, Support::Jobs::Transform::Zencoder] }
+    let(:graph) { [Graphene::Jobs::Base, Jobs::Simple] }
 
     context "in-memory" do
       before do
@@ -220,21 +220,17 @@ RSpec.describe Graphene::Pipeline do
 
     it "enqueues notification jobs" do
       expect(Graphene::CallbackNotifierJob.jobs.count).to eq(2)
-      expect(
-        Graphene::CallbackAggregate.count_for(subject.id)
-      ).to eq(2)
+      expect(Graphene::CallbackAggregate.count_for(subject.id)).to eq(2)
 
       expect_any_instance_of(
         Graphene::CallbackNotifierJob
       ).to receive(:connection).exactly(1).times.and_call_original
 
-      VCR.use_cassette("models/pipeline/callback") do
+      # VCR.use_cassette("models/pipeline/callback") do
         Graphene::CallbackNotifierJob.drain
-      end
+      # end
 
-      expect(
-        Graphene::CallbackAggregate.count_for(subject.id)
-      ).to eq(0)
+      expect(Graphene::CallbackAggregate.count_for(subject.id)).to eq(0)
     end
   end
 
