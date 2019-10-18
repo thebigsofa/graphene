@@ -91,8 +91,6 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand(config.seed)
 
-  config.include_context(:with_auth_token, :with_auth_token)
-
   config.include(FactoryBot::Syntax::Methods)
   config.before(:suite) { FactoryBot.find_definitions }
 end

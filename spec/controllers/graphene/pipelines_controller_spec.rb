@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controller do
+RSpec.describe Graphene::PipelinesController, type: :controller do
   routes { Graphene::Engine.routes }
 
   let(:time) { Time.now }
@@ -45,8 +45,6 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     end
 
     before do
-      request.headers.merge!(headers)
-
       Timecop.freeze(time) do
         post :create, params: params
       end
@@ -84,7 +82,7 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     end
 
     before do
-      request.headers.merge!(headers)
+      request.headers.merge!("CONTENT_TYPE" => "application/json")
       Timecop.freeze(time) do
         put :update, params: attributes_for(:pipeline).fetch(:params).merge(id: pipeline.id, foo: "bar", one: nil)
       end
@@ -117,7 +115,6 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
       before do
         pipeline.add_graph([Jobs::Simple]).each(&:save!)
         pipeline.children.first.fail!(StandardError.new("foobar"))
-        request.headers.merge!(headers)
         Timecop.freeze(time) do
           get :show, params: { id: pipeline.id }
         end
@@ -131,7 +128,6 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
 
     context "not found" do
       before do
-        request.headers.merge!(headers)
         get :show, params: { id: 42 }
       end
 
@@ -154,7 +150,6 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     before do
       pipeline.add_graph([Jobs::Simple]).each(&:save!)
       child_state
-      request.headers.merge!(headers)
       Timecop.freeze(time) do
         get :locked, params: { id: pipeline.id }
       end
@@ -210,7 +205,6 @@ RSpec.describe Graphene::PipelinesController, :with_auth_token, type: :controlle
     end
 
     before do
-      request.headers.merge!(headers)
       Timecop.freeze(time) do
         put :cancel, params: { id: pipeline.id }
       end
