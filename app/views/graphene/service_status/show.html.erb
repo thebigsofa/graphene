@@ -1,8 +1,106 @@
-<h2><%= Time.now %> Chimera is Alive!</h2>
-<h2>Chimera Options</h2>
-<ul>
-  <li>
-    <%= link_to "Sidekiq", sidekiq_web_path %>
-    <%= link_to "Pipeline UI", ui_pipelines_path %>
-  </li>
-</ul>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pipeline</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <style type="text/css">
+      body {
+        background: #374249;
+        text-align: center;
+
+        color: #555555;
+
+        margin: 0;
+        padding: 0;
+        font-family: "Hind", Arial, Helvetica, sans-serif;
+        text-transform: none;
+      }
+
+      .page {
+        text-align: left;
+        margin: 1% 20% auto;
+        padding: 1% 2% 2% 2%;
+        background: #ffffff;
+        border: solid 1px #e5e5e6;
+        border-radius: 3px;
+      }
+
+      .status-info {
+        background-color: #D0DE8B;
+        padding: 13px;
+        border-radius: 3px;
+      }
+
+      .status-data td.left {
+        text-align: left;
+      }
+
+      .status-data td.right {
+        text-align: left;
+      }
+
+      .status-data td {
+        padding: 10px;
+      }
+
+      .copyright {
+        color: #ffffff;
+        font-size: 10pt;
+        margin: 20px 0 0 auto;
+      }
+
+      .copyright a {
+        text-decoration: none;
+        color: #D0DE8B;
+      }
+
+      .copyright a:hover {
+        color: #D0DE8B;
+        text-decoration: underline;
+      }
+
+      a {
+        color: #374249;
+      }
+
+      a:hover {
+        color: #555555;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="page">
+      <h1 class="status-info">All systems operational</h1>
+      <table class="status-data">
+        <thead>
+          <tr>
+            <td class="left">Graphene Status:</td>
+            <td class="right">OK</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">Current Time:</td>
+            <td class="right"><%= Time.now %></td>
+          </tr>
+          <tr>
+            <td class="left">Graphene UI:</td>
+            <td class="right"><%= link_to ui_pipelines_path, ui_pipelines_path %></td>
+          </tr>
+          <tr>
+            <td class="left">Sidekiq UI:</td>
+            <td class="right"><%= link_to sidekiq_web_path, sidekiq_web_path %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="copyright">
+      Copyright © 2017 <%= link_to "Big Sofa Technologies Ltd.", "https://www.bigsofatech.com" -%> All Rights Reserved.
+    </div>
+
+  </body>
+</html>
