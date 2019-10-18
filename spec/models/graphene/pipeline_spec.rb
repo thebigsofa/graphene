@@ -226,9 +226,9 @@ RSpec.describe Graphene::Pipeline do
         Graphene::CallbackNotifierJob
       ).to receive(:connection).exactly(1).times.and_call_original
 
-      # VCR.use_cassette("models/pipeline/callback") do
+      VCR.use_cassette("models/pipeline/callback") do
         Graphene::CallbackNotifierJob.drain
-      # end
+      end
 
       expect(Graphene::CallbackAggregate.count_for(subject.id)).to eq(0)
     end

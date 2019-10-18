@@ -1,0 +1,39 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://foobar.com/
+    body:
+      encoding: UTF-8
+      string: '{"id":"5bbfb078-13cb-4a83-87c3-ceafcccd7c6f","params":{"jobs":[],"callbacks":[{"url":"http://foobar.com/"}],"media_uid":"841841"},"jobs":{},"version":1,"timestamp":"2019-01-31
+        11:20:53 +0000","state":"complete","audits":[{"params":{"jobs":["encode"],"action":"create","pipeline":{},"media_uid":"a03qq7","controller":"pipelines"},"timestamp":"2019-01-31T11:20:53.804+00:00"}]}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.3
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.14.1
+      Date:
+      - Thu, 31 Jan 2019 11:20:54 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '0'
+      Connection:
+      - keep-alive
+      Last-Modified:
+      - Fri, 11 May 2012 13:52:32 GMT
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+    http_version:
+  recorded_at: Thu, 31 Jan 2019 11:20:54 GMT
+recorded_with: VCR 4.0.0
