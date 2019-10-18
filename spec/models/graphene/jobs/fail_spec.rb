@@ -11,7 +11,7 @@ RSpec.describe Graphene::Jobs::Fail do
     let(:expected_log_message) do
       {
         "level" => "error",
-        "message" => "Tasks::Helpers::Fail failing",
+        "message" => "Graphene::Tasks::Helpers::Fail failing",
         "timestamp" => time.as_json,
         "type" => "log",
         "version" => 1
@@ -20,7 +20,7 @@ RSpec.describe Graphene::Jobs::Fail do
 
     before do
       Timecop.freeze(time) do
-        expect { subject.process }.to raise_error(Task::HaltError)
+        expect { subject.process }.to raise_error(Graphene::Tasks::Task::HaltError)
         subject.save!
         subject.reload
       end
