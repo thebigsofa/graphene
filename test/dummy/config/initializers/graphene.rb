@@ -32,6 +32,12 @@ Graphene.configure do |config|
 
   config.sidekiq_callbacks_middleware = Graphene::SidekiqCallbacksMiddleware
 
+  config.callback_auth = {
+    name: :big_sofa_auth,
+    credentials: [ENV["LOCATION"], ENV["LOCATION_SECRET"]].freeze,
+    class_name: Graphene::NoAuthMiddleware
+  }.freeze
+
   config.mappings_and_priorities = {
     "default" => {
       "mapping" => {

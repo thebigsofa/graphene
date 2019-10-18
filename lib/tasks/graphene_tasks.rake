@@ -36,6 +36,13 @@ Graphene.configure do |config|
 
   config.sidekiq_callbacks_middleware = Graphene::SidekiqCallbacksMiddleware
 
+  # Special authentication configuration for callbacks
+  config.callback_auth = {
+    name: :big_sofa_auth,
+    credentials: [].freeze, # eg. ["usernamer", "password"]
+    class_name: Graphene::NoAuthMiddleware
+  }.freeze
+
   config.mappings_and_priorities = {
     "default" => {
       "mapping" => { "simple_job" => [[Jobs::Simple::Job]] }, # replace with jobs mapping
