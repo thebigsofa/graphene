@@ -14,14 +14,24 @@ module Graphene
       end
 
       def call
-        set_values
+        save_queue_data
         perform
       end
 
       private
 
+      def save_queue_data
+        Redis.current.hmset(
+          :queue_data, sidekiq_queue.name, [sidekiq_queue.latency, sidekiq_queue.size].to_json
+        )
+      end
+
       def perform
-        Graphene.config.sidekiq_tracker.perform_in(10.seconds, name) unless too_many_jobs?
+        Graphene.config.sidekiq_tracker.perform_in(10.seconds, sidekiq_queue.name) unless too_many_jobs?
+      end
+
+      def sidekiq_queue
+        @sidekiq_queue ||= Sidekiq::Queue.new(queue)
       end
 
       def too_many_jobs?
@@ -29,27 +39,7 @@ module Graphene
       end
 
       def tracking_queue
-        @tracking_queue ||= Sidekiq::Queue.new("pipeline_tracking")
-      end
-
-      def set_values
-        Redis.current.hmset(:queue_data, name, [latency, queue_size].to_json)
-      end
-
-      def queue_size
-        sidekiq_queue.size
-      end
-
-      def sidekiq_queue
-        @sidekiq_queue ||= Sidekiq::Queue.new(queue)
-      end
-
-      def name
-        sidekiq_queue.name
-      end
-
-      def latency
-        sidekiq_queue.latency
+        @tracking_queue ||= Sidekiq::Queue.new(Graphene.config.sidekiq_tracker_queue_name)
       end
     end
   end
