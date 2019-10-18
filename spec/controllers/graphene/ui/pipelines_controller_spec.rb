@@ -3,6 +3,8 @@
 require "spec_helper"
 
 RSpec.describe Graphene::Ui::PipelinesController, type: :controller do
+  routes { Graphene::Engine.routes }
+
   describe "GET #show" do
     let(:pipeline) { create(:pipeline) }
 
