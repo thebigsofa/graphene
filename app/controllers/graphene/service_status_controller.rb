@@ -3,9 +3,10 @@ require_dependency "graphene/application_controller"
 
 module Graphene
   class ServiceStatusController < ActionController::Base
-    # layout "graphene/application"
+    layout false
 
-    def show
+    def status
+      render template: "graphene/service_status/show"
     end
   end
 end

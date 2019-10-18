@@ -3,6 +3,8 @@
 require "spec_helper"
 
 RSpec.describe Graphene::ServiceStatusController, type: :controller do
+  routes { Graphene::Engine.routes }
+
   describe "GET /status" do
     before { get :status }
 

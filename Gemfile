@@ -23,12 +23,9 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "pry-rails"
   gem "pry-remote"
-  gem "rspec-rails"
+  gem "rspec-rails", ">= 4.0.0.beta2"
   gem "rspec-its"
   gem "rspec_junit_formatter"
-  gem "spring-commands-rspec"
-  gem "spring-commands-rubocop"
-  gem "spring-commands-sidekiq"
   gem "json_matchers"
   gem "timecop"
   gem "database_cleaner"
