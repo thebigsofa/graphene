@@ -66,7 +66,7 @@ module Graphene
       validate :validate_audits_type
       validates :group, presence: true
 
-      before_validation :set_default_group
+      after_initialize :set_default_group
       before_update :audit_state_changes
       before_update :audit_errors
 
@@ -81,10 +81,8 @@ module Graphene
           else
             # [job.new(children: memo, pipeline: pipeline, version: pipeline.version)]
             # TODO: This is super weird.
-            # Why the above stopped working????
-            jj = Graphene::Jobs::Base.new(type: "#{job}", children: memo, pipeline: pipeline, version: pipeline.version)
-            jj.valid?
-            [jj]
+            # FIXME: Figure out why the code aboe stopped working and fix it.
+            [Graphene::Jobs::Base.new(type: "#{job}", children: memo, pipeline: pipeline, version: pipeline.version)]
           end
         end
       end
