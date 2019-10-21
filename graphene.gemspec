@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday_middleware"
 
   spec.add_dependency("pg", ">= 0.18", "< 2.0")
+
   spec.add_dependency("hiredis")
 
   # Job processing
