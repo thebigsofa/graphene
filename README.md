@@ -3,6 +3,8 @@ Graphene provides a graph based job and task executioner. Jobs comprise of tasks
 get queued up to process. A visitor checks the graph constantly for job state changes and
 processes the rest of the shizzle as it goes.
 
+![](https://pbs.twimg.com/profile_images/620325842703511552/r4KM_c-M_400x400.jpg)
+
 ## Instalation
 Add the following to your gemfile:
 ```ruby
