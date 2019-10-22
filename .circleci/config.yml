@@ -1,0 +1,87 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6.3
+
+      - image: circleci/postgres:10.5-alpine
+        environment:
+           POSTGRES_USER: bigsofa
+           POSTGRES_PASSWORD: bigsofa
+
+      - image: redis
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle config gems.contribsys.com $SIDEKIQ_TOKEN
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile" }}
+
+      - run:
+          name: Update /etc/hosts File
+          command: |
+            sudo echo 127.0.0.1 redis | sudo tee -a /etc/hosts
+            sudo echo 127.0.0.1 postgres | sudo tee -a /etc/hosts
+
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+
+      # Database setup
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      # - run:
+      #     name: Code Quality Checks
+      #     command: |
+      #       bundle exec rubocop
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+              circleci tests split --split-by=timings)"
+
+            bundle exec rspec \
+              --format progress \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
