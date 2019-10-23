@@ -18,7 +18,7 @@ module Graphene
       url = callback.fetch("url")
 
       connection(url, callback).post(URI(url).path) do |req|
-        req.body = PipelineSerializer.new(pipeline)
+        req.body = Graphene::Serializers::PipelineSerializer.new(pipeline)
         req.headers.merge!(callback.fetch("headers", {}))
       end
     rescue *FARRADAY_ERRORS => e

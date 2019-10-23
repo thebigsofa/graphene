@@ -40,7 +40,7 @@ RSpec.describe Graphene::PipelinesController, type: :controller do
 
     let(:expected_response) do
       Timecop.freeze(time) do
-        Graphene::PipelineSerializer.new(Graphene::Pipeline.first).to_json
+        Graphene::Serializers::PipelineSerializer.new(Graphene::Pipeline.first).to_json
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Graphene::PipelinesController, type: :controller do
   describe "PUT /pipelines/:id" do
     let(:expected_response) do
       Timecop.freeze(time) do
-        Graphene::PipelineSerializer.new(Graphene::Pipeline.first).to_json
+        Graphene::Serializers::PipelineSerializer.new(Graphene::Pipeline.first).to_json
       end
     end
 
@@ -105,7 +105,7 @@ RSpec.describe Graphene::PipelinesController, type: :controller do
     context "ok" do
       let(:expected_response) do
         Timecop.freeze(time) do
-          Graphene::PipelineSerializer.new(Graphene::Pipeline.first).to_json
+          Graphene::Serializers::PipelineSerializer.new(Graphene::Pipeline.first).to_json
         end
       end
 
@@ -179,7 +179,7 @@ RSpec.describe Graphene::PipelinesController, type: :controller do
   describe "PUT /pipelines/:id/cancel" do
     let(:expected_response) do
       Timecop.freeze(time) do
-        Graphene::PipelineSerializer.new(Graphene::Pipeline.first).to_json
+        Graphene::Serializers::PipelineSerializer.new(Graphene::Pipeline.first).to_json
       end
     end
 

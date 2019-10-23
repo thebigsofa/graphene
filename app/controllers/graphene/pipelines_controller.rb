@@ -51,7 +51,7 @@ module Graphene
     end
 
     def pipeline_to_json
-      Graphene::PipelineSerializer.new(pipeline.reload).to_json
+      Graphene::Serializers::PipelineSerializer.new(pipeline.reload).to_json
     end
   end
 end
