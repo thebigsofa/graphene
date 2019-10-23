@@ -29,13 +29,15 @@ group :development, :test do
   gem "json_matchers"
   gem "timecop"
   gem "database_cleaner"
-  gem "rubocop"
   gem "simplecov"
   gem "simplecov-console"
   gem "warning"
   gem "webmock"
   gem "vcr"
   gem "rswag-specs"
+
+  gem "rubocop"
+  gem "rubycritic"
 end
 
 group :development do

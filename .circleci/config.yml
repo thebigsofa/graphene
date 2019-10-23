@@ -1,8 +1,4 @@
-# Ruby CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -59,29 +55,44 @@ jobs:
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
-      # - run:
-      #     name: Code Quality Checks
-      #     command: |
-      #       bundle exec rubocop
-
-      # run tests!
       - run:
-          name: run tests
+          name: Rubocop Checks
           command: |
-            mkdir /tmp/test-results
+            bundle exec rubocop --format simple
+
+      - run:
+          name: Ruby Critic
+          command: |
+            export LC_ALL=C.UTF-8
+            export LANG=en_US.UTF-8
+            export LANGUAGE=en_US.UTF-8
+            bundle exec rubycritic --path /tmp/test-results/rubycritic --minimum-score 72 app lib spec
+
+      - run:
+          name: Run rSpec Tests
+          command: |
+            mkdir /tmp/test-results/rspec
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
               circleci tests split --split-by=timings)"
 
             bundle exec rspec \
               --format progress \
               --format RspecJunitFormatter \
-              --out /tmp/test-results/rspec.xml \
+              --out /tmp/test-results/rspec/rspec.xml \
               --format progress \
               $TEST_FILES
 
-      # collect reports
+      - run:
+          name: Bundle Gem and push to Nexus
+          command: |
+            gem install nexus
+            gem build graphene.gemspec
+            GRAPHENE_VERSION=$(ruby -e 'require("#{`pwd`.strip}/lib/graphene/version.rb"); puts Graphene::VERSION')
+            gem nexus --credential $NEXUS_TOKEN --url https://repo.bigsofa.co.uk/repository/rubygems -V --backtrace --debug graphene-${GRAPHENE_VERSION}.gem
+
       - store_test_results:
-          path: /tmp/test-results
+          path: /tmp/test-results/rspec
+
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
