@@ -28,7 +28,7 @@ module Graphene
           if job.is_a?(Array)
             build_group_templates(group, job)
           else
-            JobTemplate.new(job, group)
+            Graphene::Graph::JobTemplate.new(job, group)
           end
         end
       end
