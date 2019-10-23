@@ -6,7 +6,7 @@ RSpec.describe Graphene::Pipelines::Create do
   subject { described_class.new(params) }
 
   let(:data) do
-    { simple: [1,2,3,4], smooth: 3.14 }
+    { simple: [1, 2, 3, 4], smooth: 3.14 }
   end
 
   describe "#call" do

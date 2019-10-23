@@ -48,9 +48,7 @@ module Graphene
         faraday.request(:json)
 
         auth = OpenStruct.new(Graphene.config.callback_auth)
-        if callback[auth.name]
-          faraday.request(auth.name, *auth.credentials)
-        end
+        faraday.request(auth.name, *auth.credentials) if callback[auth.name]
 
         faraday.adapter(:excon)
       end

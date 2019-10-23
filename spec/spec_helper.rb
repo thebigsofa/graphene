@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
-ENGINE_RAILS_ROOT = File.join(File.dirname(__FILE__), '../')
+ENGINE_RAILS_ROOT = File.join(File.dirname(__FILE__), "../")
 
-require File.expand_path("../../test/dummy/config/environment", __FILE__)
+require File.expand_path("../test/dummy/config/environment", __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
 

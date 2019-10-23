@@ -46,7 +46,6 @@ RSpec.describe Graphene::Graph::Builder do
     end
   end
 
-
   let(:mapping) do
     {
       "duplicate_filter" => [
@@ -104,7 +103,7 @@ RSpec.describe Graphene::Graph::Builder do
       "generate_thumbnails" => 4,
       "activity_detection" => 4,
       "people_detection" => 4,
-      "behavioural_recognition" => 4,
+      "behavioural_recognition" => 4
     }.freeze
   end
 

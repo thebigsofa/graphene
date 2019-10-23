@@ -8,7 +8,7 @@ RSpec.describe Graphene::PipelinesController, type: :controller do
   let(:time) { Time.now }
 
   let(:data) do
-    { simple: [1,2,3,4], smooth: 3.14 }
+    { simple: [1, 2, 3, 4], smooth: 3.14 }
   end
 
   describe "POST /pipelines" do

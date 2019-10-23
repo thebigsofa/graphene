@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Graphene
   module Jobs
     class DependencyError < StandardError; end
@@ -82,7 +83,7 @@ module Graphene
             # [job.new(children: memo, pipeline: pipeline, version: pipeline.version)]
             # TODO: This is super weird.
             # FIXME: Figure out why the code aboe stopped working and fix it.
-            [Graphene::Jobs::Base.new(type: "#{job}", children: memo, pipeline: pipeline, version: pipeline.version)]
+            [Graphene::Jobs::Base.new(type: job.to_s, children: memo, pipeline: pipeline, version: pipeline.version)]
           end
         end
       end

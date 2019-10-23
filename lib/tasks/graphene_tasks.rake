@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable all
 DEFAULT_GRAPHENE_CONFIG = <<-CONFIG
 ENV["REDIS_URL"] ||= "redis://redis:6379"
 ENV["REDIS_DB"] ||= "1"
@@ -51,12 +52,12 @@ Graphene.configure do |config|
   }.freeze
 end
 CONFIG
+# rubocop:enable all
 
 namespace :graphene do
   namespace :install do
     desc "Create graphene initializer"
     task :config do
-
       path = Rails.root.join("config/initializers/graphene.rb")
 
       overwrite = false

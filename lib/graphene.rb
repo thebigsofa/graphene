@@ -35,7 +35,7 @@ module Graphene
   end
 
   class SidekiqCallbacksMiddleware
-    def call(worker, _msg, queue)
+    def call(_worker, _msg, _queue)
       yield
     end
   end

@@ -6,7 +6,7 @@ RSpec.describe Graphene::Pipelines::Update do
   subject { described_class.new(pipeline, params) }
 
   let(:data) do
-    { simple: [1,2,3,4], smooth: 3.14 }
+    { simple: [1, 2, 3, 4], smooth: 3.14 }
   end
 
   context "valid parameters" do
@@ -56,7 +56,7 @@ RSpec.describe Graphene::Pipelines::Update do
     it "does not save the changes" do
       expect(result).to eq(false)
       expect(Graphene::Visitors::Sidekiq.jobs.count).to eq(0)
-      expect(pipeline.reload.params.dig("simple", "data", "simple")).to eq([1,2,3,4])
+      expect(pipeline.reload.params.dig("simple", "data", "simple")).to eq([1, 2, 3, 4])
     end
   end
 
