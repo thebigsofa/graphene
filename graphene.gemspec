@@ -25,29 +25,29 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
-  spec.add_dependency("rails", ">= 6.0.0")
+  spec.add_dependency("rails", "~> 6.0.0")
 
-  spec.add_dependency "jquery-rails"
-  spec.add_dependency "jquery-ui-rails"
-  spec.add_dependency "kaminari"
-  spec.add_dependency "bootstrap4-kaminari-views"
-  spec.add_dependency "pg_search"
+  spec.add_dependency("jquery-rails", "~> 4.3.5")
+  spec.add_dependency("jquery-ui-rails", "~> 6.0.1")
+  spec.add_dependency("kaminari", "~> 1.1.1")
+  spec.add_dependency("bootstrap4-kaminari-views", "~> 1.0.1")
+  spec.add_dependency("pg_search", "~> 2.3.0")
 
-  spec.add_dependency "activerecord_json_validator"
+  spec.add_dependency("activerecord_json_validator", "~> 1.3.0")
 
-  spec.add_dependency "excon"
-  spec.add_dependency "faraday"
-  spec.add_dependency "faraday_middleware"
+  spec.add_dependency("excon", "~> 0.67.0")
+  spec.add_dependency("faraday", "~> 0.17.0")
+  spec.add_dependency("faraday_middleware", "~> 0.13.1")
 
-  spec.add_dependency("pg", ">= 0.18", "< 2.0")
+  spec.add_dependency("pg", "~> 1.1.4")
 
-  spec.add_dependency("hiredis")
+  spec.add_dependency("hiredis", "~> 0.6.3")
 
   # Job processing
-  spec.add_dependency("sidekiq-pro")
-  spec.add_dependency("sidekiq-throttled")
-  spec.add_dependency("sidekiq-status")
-  spec.add_dependency("sidekiq-failures")
+  spec.add_dependency("sidekiq-pro", "~> 5.0.1")
+  spec.add_dependency("sidekiq-throttled", "~> 0.11.0")
+  spec.add_dependency("sidekiq-status", "~> 1.1.4")
+  spec.add_dependency("sidekiq-failures", "~> 1.0.0")
 
-  spec.add_dependency("sheaf")
+  spec.add_dependency("sheaf", "~> 0.1.1")
 end
