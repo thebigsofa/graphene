@@ -70,7 +70,9 @@ module Graphene
 
       def re_enqueue(retries, job, reset = false)
         delay = retry_delay(retries)
-        self.class.set(queue: job.queue).perform_in(delay, job.to_global_id, retries + 1, reset)
+        self.class.set(queue: job.queue).perform_in(
+          delay, job.to_global_id, retries + 1, reset
+        )
       end
 
       def parent_state_check(job)

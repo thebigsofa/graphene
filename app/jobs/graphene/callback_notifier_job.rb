@@ -41,17 +41,25 @@ module Graphene
       raise error
     end
 
-    def connection(url, callback)
-      Faraday.new(url: URI.join(url, "/").to_s) do |faraday|
-        faraday.response(:raise_error)
-        faraday.response(:json)
-        faraday.request(:json)
+    module Connection
+      class << self
+        def get(url, callback)
+          Faraday.new(url: url) do |faraday|
+            faraday.response(:raise_error)
+            faraday.response(:json)
+            faraday.request(:json)
 
-        auth = OpenStruct.new(Graphene.config.callback_auth)
-        faraday.request(auth.name, *auth.credentials) if callback[auth.name]
+            auth = OpenStruct.new(Graphene.config.callback_auth)
+            faraday.request(auth.name, *auth.credentials) if callback[auth.name]
 
-        faraday.adapter(:excon)
+            faraday.adapter(:excon)
+          end
+        end
       end
+    end
+
+    def connection(url, callback)
+      Connection.get(URI.join(url, "/").to_s, callback)
     end
   end
 end
