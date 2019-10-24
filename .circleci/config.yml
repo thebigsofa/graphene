@@ -24,7 +24,7 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: |
             bundle config gems.contribsys.com $SIDEKIQ_TOKEN
             bundle install --jobs=4 --retry=3 --path vendor/bundle
@@ -69,7 +69,7 @@ jobs:
             bundle exec rubycritic --path /tmp/test-results/rubycritic --minimum-score 72 app lib spec
 
       - run:
-          name: Run rSpec Tests
+          name: Run rspec Tests
           command: |
             mkdir /tmp/test-results/rspec
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
@@ -85,10 +85,16 @@ jobs:
       - run:
           name: Bundle Gem and push to Nexus
           command: |
-            gem install nexus
-            gem build graphene.gemspec
-            GRAPHENE_VERSION=$(ruby -e 'require("#{`pwd`.strip}/lib/graphene/version.rb"); puts Graphene::VERSION')
-            gem nexus --credential $NEXUS_TOKEN --url https://repo.bigsofa.co.uk/repository/rubygems -V --backtrace --debug graphene-${GRAPHENE_VERSION}.gem
+            if [[ $CIRCLE_BRANCH = "master" ]]
+            then
+              echo "Building graphene gem and pushing to Nexus..."
+              gem install nexus
+              gem build graphene.gemspec
+              GRAPHENE_VERSION=$(ruby -e 'require("#{`pwd`.strip}/lib/graphene/version.rb"); puts Graphene::VERSION')
+              gem nexus --credential $NEXUS_TOKEN --url https://repo.bigsofa.co.uk/repository/rubygems -V --backtrace --debug graphene-${GRAPHENE_VERSION}.gem
+            else
+              echo "Not master branch. Skipping gem build and Nexus push."
+            fi
 
       - store_test_results:
           path: /tmp/test-results/rspec
