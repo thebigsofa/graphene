@@ -70,7 +70,7 @@ module Graphene
     }.freeze
 
     Faraday::Request.register_middleware(
-      config.callback_auth => (-> { config.callback_auth.class_name })
+      config.callback_auth.fetch(:name) => (-> { config.callback_auth.fetch(:class_name) })
     )
   end
 

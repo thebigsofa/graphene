@@ -59,7 +59,7 @@ module Graphene
     end
 
     def connection(url, callback)
-      Connection.get(URI.join(url, "/").to_s, callback)
+      Connection.get(URI.join(url, "/").to_s, callback.with_indifferent_access)
     end
   end
 end
