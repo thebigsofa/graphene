@@ -32,4 +32,6 @@ Graphene::Engine.routes.draw do
   end
 
   get "/status" => "service_status#status"
+
+  root "service_status#status"
 end
