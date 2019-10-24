@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require "sidekiq-status"
+
 module Graphene
   module Visitors
     class Sidekiq < Visitor
       MAX_RETRIES = 5
 
+      include ::Sidekiq::Status::Worker
       include ::Sidekiq::Worker
       include ::Graphene::Timeoutable
 
@@ -111,9 +114,8 @@ module Graphene
       def retry_job(job, error, retries)
         job.retrying!(error) unless job.retrying?
         delay = retry_delay(retries)
-        ::Sidekiq.logger.info(
-          "#{job.class.name} #{job.id}: Retry #{retries + 1} of #{MAX_RETRIES} in #{delay} seconds"
-        )
+        message = "#{job.class.name} #{job.id}: Retry #{retries + 1} of #{MAX_RETRIES} in #{delay} seconds"
+        ::Sidekiq.logger.info(message)
         self.class.set(queue: job.queue).perform_in(delay, job.to_global_id, retries + 1)
       end
       # rubocop:enable Metrics/AbcSize
