@@ -3,11 +3,7 @@
 FactoryBot.define do
   factory :pipeline, class: Graphene::Pipeline do
     params do
-      media_uid = if defined?(TEST_MEDIA_UID)
-                    TEST_MEDIA_UID
-                  else
-                    SecureRandom.uuid.split("-").last
-                  end
+      media_uid = SecureRandom.uuid.split("-").last
 
       {
         media_uid: media_uid,

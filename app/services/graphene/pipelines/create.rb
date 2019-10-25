@@ -16,7 +16,7 @@ module Graphene
           ActiveRecord::Base.transaction do
             pipeline.audits.push(audit)
             pipeline.save!
-            pipeline.each(&:save!)
+            pipeline.reload.each(&:save!)
           end
         end
       end

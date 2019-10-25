@@ -23,6 +23,26 @@ Sidekiq.configure_client do |config|
   config.redis = { url: redis_url }
 end
 
+class DefaultMappingAndPriorities
+  def self.mapping
+    {
+      "encode" => [[Jobs::Transform::Zencoder]],
+      "simple" => [[Jobs::Simple]],
+      "smooth" => [[Jobs::Smooth]],
+      "unite_data" => [[Jobs::UniteData]]
+    }.freeze
+  end
+
+  def self.priorities
+    {
+      "simple" => 0,
+      "smooth" => 1,
+      "unite_data" => 2,
+      "encode" => -1
+    }.freeze
+  end
+end
+
 Graphene.configure do |config|
   # Sidekiq job to send metrics for Siekiq autoscaling
   config.sidekiq_tracker = Graphene::JobsTrackingDisabled
@@ -39,19 +59,6 @@ Graphene.configure do |config|
   }.freeze
 
   config.mappings_and_priorities = {
-    "default" => {
-      "mapping" => {
-        "encode" => [[Jobs::Transform::Zencoder]],
-        "simple" => [[Jobs::Simple]],
-        "smooth" => [[Jobs::Smooth]],
-        "unite_data" => [[Jobs::UniteData]]
-      },
-      "priorities" => {
-        "simple" => 0,
-        "smooth" => 1,
-        "unite_data" => 2,
-        "encode" => 3
-      }
-    }
-  }.freeze
+    "default" => DefaultMappingAndPriorities
+  }
 end

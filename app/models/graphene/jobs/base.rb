@@ -69,6 +69,7 @@ module Graphene
       validate :validate_audits_type
       validates :group, presence: true
 
+      # after_initialize :set_default_group # TODO: maybe that is better?
       before_validation :set_default_group
       before_update :audit_state_changes
       before_update :audit_errors

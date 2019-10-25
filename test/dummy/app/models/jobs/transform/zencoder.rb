@@ -22,11 +22,8 @@ module Jobs
       ]
 
       def process
-        process_tasks(stack) do |response|
-          update!(identifier: identifier.merge(zencoder_job_id: SecureRandom.uuid))
-
-          yield("Encoding #{response} complete.") if block_given?
-        end
+        update!(identifier: identifier.merge(zencoder_job_id: SecureRandom.uuid))
+        super
       end
     end
   end

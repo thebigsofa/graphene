@@ -23,6 +23,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "pry-rails"
   gem "pry-remote"
+  gem "pry-stack_explorer"
   gem "rspec-rails", ">= 4.0.0.beta3"
   gem "rspec-its"
   gem "rspec_junit_formatter"

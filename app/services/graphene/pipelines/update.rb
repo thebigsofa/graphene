@@ -9,7 +9,7 @@ module Graphene
 
       def initialize(pipeline, params)
         @pipeline = pipeline
-        @params = params.to_h
+        @params = params.to_h.deep_symbolize_keys
       end
 
       def call
@@ -40,13 +40,13 @@ module Graphene
       def update_graph_version!
         return unless changed_params.include?(:jobs)
 
-        pipeline.increment_version_and_add_graph(
-          Graphene::Graph::Builder.new(
-            params.fetch(:jobs),
-            mapping: Graphene::Pipelines::Config.mapping(params),
-            priorities: Graphene::Pipelines::Config.priorities(params)
-          ).to_graph
-        )
+        new_graph = Graphene::Graph::Builder.new(
+          params.fetch(:jobs),
+          mapping: Graphene::Pipelines::Config.mapping(params),
+          priorities: Graphene::Pipelines::Config.priorities(params)
+        ).to_graph
+
+        pipeline.increment_version_and_add_graph(new_graph)
       end
 
       def update_jobs!

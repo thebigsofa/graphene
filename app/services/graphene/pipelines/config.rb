@@ -4,12 +4,13 @@ module Graphene
   module Pipelines
     module Config
       class << self
+        # TODO: Change this to just the value of params[:mappings_and_priorities]
         def mapping(params)
-          mappings_and_priorities(params)["mapping"]
+          mappings_and_priorities(params).mapping
         end
 
         def priorities(params)
-          mappings_and_priorities(params)["priorities"]
+          mappings_and_priorities(params).priorities
         end
 
         def mappings_and_priorities(params)
