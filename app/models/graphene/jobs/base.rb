@@ -15,8 +15,10 @@ module Graphene
         end
 
         def call(*args, &block)
-          Sidekiq.logger.info("pipeline: #{job.pipeline_id} job: #{job.class.name} #{job.id} " \
-                              "running task: #{task.class.name}")
+          Sidekiq.logger.info(
+            "pipeline: #{job.pipeline_id} job: #{job.class.name} #{job.id} " \
+            "running task: #{task.class.name}"
+          )
           task.call(*args, &block)
         end
       end
@@ -76,9 +78,7 @@ module Graphene
       def self.from_graph(graph, pipeline:, children: [])
         graph.reverse.inject(children) do |memo, job|
           if job.is_a?(Array)
-            job.map do |edge|
-              from_graph(edge, children: memo, pipeline: pipeline).first
-            end
+            job.map { |edge| from_graph(edge, children: memo, pipeline: pipeline).first }
           else
             [job.new(children: memo, pipeline: pipeline, version: pipeline.version)]
           end

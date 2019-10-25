@@ -27,7 +27,7 @@ module Graphene
       end
 
       def perform
-        unless too_many_jobs?
+        unless too_many_jobs? # rubocop:disable Style/GuardClause
           Graphene.config.sidekiq_tracker.perform_in(10.seconds, sidekiq_queue.name)
         end
       end
