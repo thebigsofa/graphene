@@ -1,9 +1,12 @@
 AllCops:
   Exclude:
+    - lib/graphene.rb
+    - graphene.gemspec
     - bin/**/*
     - db/**/*
     - config/**/*
     - vendor/**/*
+    - test/**/*
 
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -43,7 +46,7 @@ Style/NumericPredicate:
 
 Style/MethodCallWithArgsParentheses:
   Enabled: true
-  IgnoredMethods: ["gem", "puts", "require", "source", "add_development_dependency", "add_runtime_dependency", "run", "require_relative", "raise", "fail", "status", "body", "use", "to", "not_to", "describe", "it", "shared_context", "around", "hook_into", "mock_with", "expect_with"]
+  IgnoredMethods: ["gem", "puts", "require", "source", "add_development_dependency", "add_runtime_dependency", "run", "require_relative", "raise", "fail", "status", "body", "use", "to", "not_to", "describe", "it", "shared_context", "around", "hook_into", "mock_with", "expect_with", "render", "require_dependency"]
 
 # https://blog.bigbinary.com/2012/01/08/alias-vs-alias-method.html
 Style/Alias:

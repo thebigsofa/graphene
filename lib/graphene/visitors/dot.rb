@@ -57,7 +57,9 @@ module Graphene
 
       # rubocop:disable Metrics/AbcSize
       def visit(job)
-        return connect(nodes[job_id(stack.last)], nodes[job_id(job)]) if nodes.key?(job_id(job))
+        if nodes.key?(job_id(job))
+          return connect(nodes[job_id(stack.last)], nodes[job_id(job)])
+        end
 
         nodes[job_id(job)] = node = Node.new(nodes.size + 1, job)
         connect(nodes[job_id(stack.last)], node) unless stack.empty?

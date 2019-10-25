@@ -78,6 +78,7 @@ module Graphene
 
       def enqueue_sidekiq_visitor!
         return unless params_or_any_job_changed?
+
         Graphene::Visitors::Sidekiq.new.visit(pipeline)
       end
 
