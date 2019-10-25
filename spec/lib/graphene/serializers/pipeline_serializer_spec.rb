@@ -125,12 +125,18 @@ RSpec.describe Graphene::Serializers::PipelineSerializer do
         Jobs::Simple,
         [
           [Jobs::Smooth],
-          [Jobs::Encode]
+          [Jobs::Transform::Zencoder]
         ]
       ]
     end
 
-    let(:root) { pipeline.add_graph(graph).first }
+    let(:root) do
+      new_roots = pipeline.add_graph(graph).first
+      pipeline.jobs.select { |jj| jj.type == "Jobs::Transform::Zencoder" }.map do |job|
+        job.update!(group: "encode")
+      end
+      new_roots
+    end
 
     before do
       Timecop.freeze(time) do

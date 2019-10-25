@@ -41,7 +41,7 @@ Graphene.configure do |config|
   config.mappings_and_priorities = {
     "default" => {
       "mapping" => {
-        "encode" => [[Jobs::Encode]],
+        "encode" => [[Jobs::Transform::Zencoder]],
         "simple" => [[Jobs::Simple]],
         "smooth" => [[Jobs::Smooth]],
         "unite_data" => [[Jobs::UniteData]]
