@@ -7,6 +7,9 @@ ENV["REDIS_DB"] ||= "1"
 
 require "sidekiq"
 require "sidekiq/throttled"
+require "sidekiq/failures"
+require "sidekiq-status"
+
 Sidekiq::Throttled.setup!
 Sidekiq::Client.reliable_push! unless Rails.env.test?
 
@@ -21,10 +24,17 @@ Sidekiq.configure_server do |config|
   config.server_middleware do |chain|
     chain.add(Graphene.config.sidekiq_callbacks_middleware)
   end
+
+  config.failures_default_mode = :all
+  config.failures_max_count = 1000
+
+  Sidekiq::Status.configure_server_middleware(config, expiration: 1.day)
+  Sidekiq::Status.configure_client_middleware(config, expiration: 1.day)
 end
 
 Sidekiq.configure_client do |config|
   config.redis = { url: redis_url }
+  Sidekiq::Status.configure_client_middleware(config, expiration: 1.day)
 end
 
 Graphene.configure do |config|
