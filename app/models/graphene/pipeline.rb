@@ -133,9 +133,10 @@ module Graphene
     end
 
     def notify_callbacks!
+      delay = Graphene.config.callback_notifier_delay.seconds
       params["callbacks"]&.each do |callback|
         aggregate_callback
-        CallbackNotifierJob.perform_in(30.seconds, id, callback.to_h)
+        CallbackNotifierJob.perform_in(delay, id, callback.to_h)
         Tracking::SidekiqTrackable.call(:pipeline_poll)
       end
     end
