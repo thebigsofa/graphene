@@ -26,8 +26,7 @@ module Graphene
       def graph
         @graph ||= Graphene::Graph::Builder.new(
           params[:jobs],
-          mapping: Graphene::Pipelines::Config.mapping(params),
-          priorities: Graphene::Pipelines::Config.priorities(params)
+          mapping_and_priorities: params[:mappings_and_priorities]
         ).to_graph
       end
 

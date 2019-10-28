@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Graphene::Graph::Builder do
-  subject { described_class.new(jobs, mapping: mapping, priorities: priorities) }
+  subject { described_class.new(jobs, mapping_and_priorities: "custom") }
 
   module Support
     module Jobs
@@ -46,8 +46,8 @@ RSpec.describe Graphene::Graph::Builder do
     end
   end
 
-  let(:mapping) do
-    {
+  class CustomMappingAndPriorities
+    MAPPING = {
       "duplicate_filter" => [
         [Support::Jobs::QA::DuplicateFilter]
       ],
@@ -87,10 +87,8 @@ RSpec.describe Graphene::Graph::Builder do
         [Support::Jobs::Analysis::BehaviouralRecognition]
       ]
     }.freeze
-  end
 
-  let(:priorities) do
-    {
+    PRIORITIES = {
       "duplicate_filter" => 1,
       "duration_filter" => 1,
 
@@ -105,6 +103,18 @@ RSpec.describe Graphene::Graph::Builder do
       "people_detection" => 4,
       "behavioural_recognition" => 4
     }.freeze
+
+    def mapping
+      MAPPING
+    end
+
+    def priorities
+      PRIORITIES
+    end
+  end
+
+  before do
+    Graphene.config.mappings_and_priorities["custom"] = CustomMappingAndPriorities.new
   end
 
   context "single job" do

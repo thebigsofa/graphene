@@ -106,8 +106,7 @@ RSpec.describe "Enqueue and process a job (class name amd job name are different
 
     new_graph = Graphene::Graph::Builder.new(
       %w[encode simple],
-      mapping: Graphene::Pipelines::Config.mapping("default"),
-      priorities: Graphene::Pipelines::Config.priorities("default")
+      mapping_and_priorities: "default"
     ).to_graph
 
     pipeline.add_graph(new_graph)

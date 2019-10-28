@@ -3,10 +3,10 @@
 module Graphene
   module Graph
     class Builder
-      def initialize(jobs, mapping:, priorities:)
+      def initialize(jobs, mapping_and_priorities: "default")
         @jobs = jobs
-        @mapping = mapping
-        @priorities = priorities
+        @mapping = Graphene::Graph::Config.call(mapping_and_priorities).mapping
+        @priorities = Graphene::Graph::Config.call(mapping_and_priorities).priorities
       end
 
       def to_graph
