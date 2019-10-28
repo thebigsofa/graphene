@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+bundle exec rubocop --parallel --format simple
+
+bundle exec rubycritic --path /tmp/test-results/rubycritic --minimum-score 72 app lib spec

@@ -56,17 +56,12 @@ jobs:
       - run: bundle exec rake db:schema:load
 
       - run:
-          name: Rubocop Checks
-          command: |
-            bundle exec rubocop --format simple
-
-      - run:
-          name: Ruby Critic
+          name: Run Rubocop and Ruby Critic
           command: |
             export LC_ALL=C.UTF-8
             export LANG=en_US.UTF-8
             export LANGUAGE=en_US.UTF-8
-            bundle exec rubycritic --path /tmp/test-results/rubycritic --minimum-score 72 app lib spec
+            ./bin/quality
 
       - run:
           name: Run rspec Tests
