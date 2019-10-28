@@ -52,8 +52,7 @@ jobs:
             echo Failed waiting for Postgress && exit 1
 
       # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+      - run: bundle exec rake db:create db:schema:load
 
       - run:
           name: Run Rubocop and Ruby Critic
