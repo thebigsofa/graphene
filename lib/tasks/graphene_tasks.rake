@@ -63,6 +63,9 @@ Graphene.configure do |config|
       "priorities" => { "simple_job" =>  0 } # replace with real priorities mapping
     }
   }.freeze
+
+  # Authentication middleware for the sidekiq UI
+  config.sidekiq_auth_middleware = Graphene::NoAuthentication
 end
 CONFIG
 # rubocop:enable all

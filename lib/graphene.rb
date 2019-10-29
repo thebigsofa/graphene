@@ -73,6 +73,8 @@ module Graphene
     Faraday::Request.register_middleware(
       config.callback_auth.fetch(:name) => (-> { config.callback_auth.fetch(:class_name) })
     )
+
+    self.config.sidekiq_auth_middleware ||= Graphene::NoAuthentication
   end
 
   class Config
@@ -83,7 +85,8 @@ module Graphene
       :mappings_and_priorities,
       :sidekiq_callbacks_middleware,
       :callback_notifier_delay,
-      :callback_auth
+      :callback_auth,
+      :sidekiq_auth_middleware
     )
   end
 

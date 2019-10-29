@@ -64,4 +64,7 @@ Graphene.configure do |config|
   config.mappings_and_priorities = {
     "default" => DefaultMappingAndPriorities
   }
+
+  # Authentication middleware for the sidekiq UI
+  config.sidekiq_auth_middleware = Graphene::NoAuthentication
 end
