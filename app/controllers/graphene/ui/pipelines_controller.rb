@@ -7,8 +7,6 @@ module Graphene
     class PipelinesController < ActionController::Base
       layout "graphene/application"
 
-      before_action :authenticate!
-
       def index
         @pipelines = Graphene::Pipeline.order(created_at: "DESC")
         @pipelines = filter_pipelines(@pipelines)
@@ -39,19 +37,6 @@ module Graphene
         return pipelines if params[:search].blank?
 
         pipelines.search(params.permit(:search).fetch(:search))
-      end
-
-      def authenticate!
-        return unless Rails.env.production?
-
-        authenticate_or_request_with_http_basic do |username, password|
-          Rack::Utils.secure_compare(
-            ::Digest::SHA256.hexdigest(username), ENV.fetch("SIDEKIQ_USERNAME")
-          ) &&
-            Rack::Utils.secure_compare(
-              ::Digest::SHA256.hexdigest(password), ENV.fetch("SIDEKIQ_PASSWORD")
-            )
-        end
       end
     end
   end
