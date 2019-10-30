@@ -57,17 +57,46 @@ Graphene.configure do |config|
     class_name: Graphene::NoAuthMiddleware
   }.freeze
 
-  config.mappings_and_priorities = {
-    "default" => {
-      "mapping" => { "simple_job" => [[Jobs::Simple::Job]] }, # replace with jobs mapping
-      "priorities" => { "simple_job" =>  0 } # replace with real priorities mapping
-    }
-  }.freeze
+  config.mappings_and_priorities = SampleMapping
 
   # Authentication middleware for the sidekiq UI
   config.sidekiq_auth_middleware = Graphene::NoAuthentication
 end
 CONFIG
+
+SAMPLE_MAPPING = <<-SAMPLE_MAPPING
+class SampleMapping
+  class Task
+    include Graphene::Tasks::Task
+
+    def call(data:)
+      yield("Inspecting \#{data.inspect}")
+    end
+  end
+
+  class Job1 < Graphene::Jobs::Base
+    STACK = Graphene::Stack[Task]
+  end
+
+  class Job2 < Graphene::Jobs::Base
+    STACK = Graphene::Stack[Task]
+  end
+
+  def self.mapping
+    {
+      "simple" => [[Job1]],
+      "smooth" => [[Job2]]
+    }.freeze
+  end
+
+  def self.priorities
+    {
+      "simple" => 0,
+      "smooth" => 1
+    }.freeze
+  end
+end
+SAMPLE_MAPPING
 # rubocop:enable all
 
 namespace :graphene do
@@ -75,6 +104,7 @@ namespace :graphene do
     desc "Create graphene initializer"
     task :config do
       path = Rails.root.join("config/initializers/graphene.rb")
+      mappings_path = Rails.root.join("app/models/sample_mapping.rb")
 
       overwrite = false
 
@@ -84,10 +114,12 @@ namespace :graphene do
       end
 
       if overwrite || !File.exist?(path)
+        File.open(mappings_path, "w+") { |file| file.write(SAMPLE_MAPPING) }
         File.open(path, "w+") { |file| file.write(DEFAULT_GRAPHENE_CONFIG) }
       end
 
       puts "Config file created in #{path}"
+      puts "Mapping file created in #{mappings_path}"
     end
   end
 end
