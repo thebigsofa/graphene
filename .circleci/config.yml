@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/ruby:2.6.3
 
@@ -51,7 +51,6 @@ jobs:
             done
             echo Failed waiting for Postgress && exit 1
 
-      # Database setup
       - run: bundle exec rake db:create db:schema:load
 
       - run:
@@ -76,23 +75,40 @@ jobs:
               --format progress \
               $TEST_FILES
 
-      - run:
-          name: Bundle Gem and push to Nexus
-          command: |
-            if [[ $CIRCLE_BRANCH = "master" ]]
-            then
-              echo "Building graphene gem and pushing to Nexus..."
-              gem install nexus
-              gem build graphene.gemspec
-              GRAPHENE_VERSION=$(ruby -e 'require("#{`pwd`.strip}/lib/graphene/version.rb"); puts Graphene::VERSION')
-              gem nexus --credential $NEXUS_TOKEN --url https://repo.bigsofa.co.uk/repository/rubygems -V --backtrace --debug graphene-${GRAPHENE_VERSION}.gem
-            else
-              echo "Not master branch. Skipping gem build and Nexus push."
-            fi
-
       - store_test_results:
           path: /tmp/test-results/rspec
 
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+
+  build:
+    docker:
+      - image: circleci/ruby:2.6.3
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Bundle Gem and push to Nexus
+          command: |
+            echo "Building graphene gem and pushing to Nexus..."
+            gem install nexus
+            gem build graphene.gemspec
+            GRAPHENE_VERSION=$(ruby -e 'require("#{`pwd`.strip}/lib/graphene/version.rb"); puts Graphene::VERSION')
+            gem nexus --credential $NEXUS_TOKEN --url https://repo.bigsofa.co.uk/repository/rubygems -V --backtrace --debug graphene-${GRAPHENE_VERSION}.gem
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
