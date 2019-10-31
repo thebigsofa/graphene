@@ -17,7 +17,7 @@ module Graphene
       end
 
       extend ActiveSupport::Concern
-      include Concerns::Loggable
+      include Graphene::Concerns::Loggable
 
       # rubocop:disable Metrics/BlockLength
       class_methods do

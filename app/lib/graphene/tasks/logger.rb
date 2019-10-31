@@ -3,7 +3,7 @@
 module Graphene
   module Tasks
     class Logger
-      include Concerns::Loggable
+      include Graphene::Concerns::Loggable
 
       attr_reader :job, :logger
 
