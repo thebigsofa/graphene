@@ -38,8 +38,9 @@ Sidekiq.configure_client do |config|
 end
 
 Graphene.configure do |config|
-  # Sidekiq job to send metrics for Siekiq autoscaling
-  config.sidekiq_tracker = Graphene::JobsTrackingDisabled
+  # Sidekiq jobs to send metrics for Siekiq autoscaling
+  config.sidekiq_keep_alive = Graphene::JobsTrackingDisabled
+  config.sidekiq_tracking = Graphene::JobsTrackingDisabled
   config.sidekiq_tracker_queue_name = "pipeline_tracking"
 
   # A Rack middleware to authenticate Graphene API against

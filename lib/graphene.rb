@@ -59,7 +59,8 @@ module Graphene
   def self.configure
     self.config ||= Config.new
     yield(config)
-    self.config.sidekiq_tracker ||= Graphene::JobsTrackingDisabled
+    self.config.sidekiq_keep_alive = Graphene::JobsTrackingDisabled
+    self.config.sidekiq_tracking = Graphene::JobsTrackingDisabled
     self.config.sidekiq_tracker_queue_name ||= "pipeline_tracking"
     self.config.auth_middleware ||= Graphene::NoAuthentication
     self.config.sidekiq_callbacks_middleware ||= Graphene::SidekiqCallbacksMiddleware
@@ -79,7 +80,8 @@ module Graphene
 
   class Config
     attr_accessor(
-      :sidekiq_tracker,
+      :sidekiq_keep_alive,
+      :sidekiq_tracking,
       :sidekiq_tracker_queue_name,
       :auth_middleware,
       :mappings_and_priorities,

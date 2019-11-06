@@ -25,7 +25,7 @@ Sidekiq.logger = Logger.new(nil)
 
 class SidekiqCallbacksMiddleware
   def call(worker, _msg, queue)
-    unless worker.class == Graphene.config.sidekiq_tracker
+    unless worker.class == Graphene.config.sidekiq_tracking
       Graphene::Tracking::SidekiqTrackable.call(queue)
     end
     yield
