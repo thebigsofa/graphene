@@ -137,7 +137,7 @@ module Graphene
       params["callbacks"]&.each do |callback|
         aggregate_callback
         CallbackNotifierJob.perform_in(delay, id, callback.to_h)
-        Tracking::SidekiqTrackable.call(:pipeline_poll)
+        Graphene::Tracking::SidekiqTrackable.call(:pipeline_poll)
       end
     end
   end
