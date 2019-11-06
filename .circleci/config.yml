@@ -32,7 +32,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile" }}
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
       - run:
           name: Update /etc/hosts File
