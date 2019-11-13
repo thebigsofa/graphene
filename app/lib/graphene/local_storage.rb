@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-class LocalStorage
-  include Singleton
+module Graphene
+  class LocalStorage
+    include Singleton
 
-  attr_accessor :data
+    attr_accessor :data
 
-  def initialize
-    @data = {}
-  end
+    def initialize
+      @data = {}
+    end
 
-  def add(key, value)
-    data[key.to_sym] = value
-  end
+    def add(key, value)
+      data[key.to_sym] = value
+    end
 
-  def get(key)
-    data[key.to_sym]
+    def get(key)
+      data[key.to_sym]
+    end
   end
 end
