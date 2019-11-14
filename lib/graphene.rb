@@ -56,6 +56,8 @@ module Graphene
     attr_accessor :config
   end
 
+  # ENV.fetch("POLLING_TIMEOUT")
+
   def self.configure
     self.config ||= Config.new
     yield(config)
@@ -64,7 +66,8 @@ module Graphene
     self.config.sidekiq_tracker_queue_name ||= "pipeline_tracking"
     self.config.auth_middleware ||= Graphene::NoAuthentication
     self.config.sidekiq_callbacks_middleware ||= Graphene::SidekiqCallbacksMiddleware
-    self.config.sidekiq_callbacks_middleware ||= 30
+
+    self.config.callback_delay ||= 30
     self.config.callback_auth ||= {
       name: :big_sofa_auth,
       credentials: [].freeze,
@@ -86,7 +89,7 @@ module Graphene
       :auth_middleware,
       :mappings_and_priorities,
       :sidekiq_callbacks_middleware,
-      :callback_notifier_delay,
+      :callback_delay,
       :callback_auth,
       :sidekiq_auth_middleware
     )

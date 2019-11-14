@@ -133,7 +133,7 @@ module Graphene
     end
 
     def notify_callbacks!
-      delay = Graphene.config.callback_notifier_delay.seconds
+      delay = Graphene.config.callback_delay.seconds
       params["callbacks"]&.each do |callback|
         aggregate_callback
         CallbackNotifierJob.perform_in(delay, id, callback.to_h)
