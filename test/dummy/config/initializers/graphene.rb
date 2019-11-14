@@ -54,7 +54,7 @@ Graphene.configure do |config|
   config.sidekiq_callbacks_middleware = Graphene::SidekiqCallbacksMiddleware
 
   # Callback notifier background job delay in seconds
-  config.callback_notifier_delay = 30 # seconds
+  config.callback_delay = 30 # seconds
 
   config.callback_auth = {
     name: :big_sofa_auth,
