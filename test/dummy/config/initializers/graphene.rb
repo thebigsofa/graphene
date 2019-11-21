@@ -62,6 +62,8 @@ Graphene.configure do |config|
     class_name: Graphene::NoAuthMiddleware
   }.freeze
 
+  config.poll_timeout = 15 * 60 # 15 minutes
+
   config.mappings_and_priorities = {
     "default" => DefaultMappingAndPriorities
   }

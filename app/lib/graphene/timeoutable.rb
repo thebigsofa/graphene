@@ -27,7 +27,7 @@ module Graphene
       job.with_lock do
         return unless job.in_progress?
 
-        if (Time.now.utc - job.state_changed_at) > Graphene.config.callback_delay.to_i
+        if (Time.now.utc - job.state_changed_at) > Graphene.config.poll_timeout.to_i
           job.fail!(PollTimeoutError.new("Job has timed out"))
         else
           yield

@@ -58,6 +58,8 @@ Graphene.configure do |config|
     class_name: Graphene::NoAuthMiddleware
   }.freeze
 
+  config.poll_timeout = 15 * 60 # 15 minutes seconds
+
   config.mappings_and_priorities = SampleMapping
 
   # Authentication middleware for the sidekiq UI
