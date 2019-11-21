@@ -74,6 +74,8 @@ module Graphene
       class_name: Graphene::NoAuthMiddleware
     }.freeze
 
+    self.config.poll_timeout ||= 15.minutes
+
     Faraday::Request.register_middleware(
       config.callback_auth.fetch(:name) => (-> { config.callback_auth.fetch(:class_name) })
     )
@@ -91,7 +93,8 @@ module Graphene
       :sidekiq_callbacks_middleware,
       :callback_delay,
       :callback_auth,
-      :sidekiq_auth_middleware
+      :sidekiq_auth_middleware,
+      :poll_timeout
     )
   end
 
