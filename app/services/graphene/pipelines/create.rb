@@ -25,6 +25,7 @@ module Graphene
 
       def graph
         @graph ||= Graphene::Graph::Builder.new(
+          params,
           params[:jobs],
           mapping_and_priorities: params[:mappings_and_priorities]
         ).to_graph

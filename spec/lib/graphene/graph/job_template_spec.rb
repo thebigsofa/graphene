@@ -9,7 +9,7 @@ RSpec.describe Graphene::Graph::JobTemplate do
   context "given a group name" do
     let(:group) { "foo" }
 
-    subject { described_class.new(job_klass, group).new(pipeline: pipeline) }
+    subject { described_class.new(job_klass, group: group).new(pipeline: pipeline) }
 
     it "assigns the group to the job" do
       expect(subject).to be_kind_of(job_klass)

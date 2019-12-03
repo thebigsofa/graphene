@@ -41,6 +41,7 @@ module Graphene
         return unless changed_params.include?(:jobs)
 
         new_graph = Graphene::Graph::Builder.new(
+          params,
           params.fetch(:jobs),
           mapping_and_priorities: params[:mappings_and_priorities]
         ).to_graph

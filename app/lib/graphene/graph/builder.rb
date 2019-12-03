@@ -3,7 +3,8 @@
 module Graphene
   module Graph
     class Builder
-      def initialize(jobs, mapping_and_priorities: "default")
+      def initialize(params, jobs, mapping_and_priorities: "default")
+        @params = params.as_json
         @jobs = jobs
         @mapping = Graphene::Graph::Config.call(mapping_and_priorities).mapping
         @priorities = Graphene::Graph::Config.call(mapping_and_priorities).priorities
@@ -21,14 +22,16 @@ module Graphene
 
       private
 
-      attr_reader :jobs, :mapping, :priorities
+      attr_reader :params, :jobs, :mapping, :priorities
 
       def build_group_templates(group, jobs = nil)
         (jobs || mapping.fetch(group)).map do |job|
           if job.is_a?(Array)
             build_group_templates(group, job)
           else
-            Graphene::Graph::JobTemplate.new(job, group)
+            Graphene::Graph::JobTemplate.new(
+              job, group: group, parent_job: params.dig(group, "parent")
+            )
           end
         end
       end

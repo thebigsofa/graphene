@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Graphene::Pipeline do
-  subject { create(:pipeline, params: params) }
+  subject(:pipeline) { create(:pipeline, params: params) }
 
   let(:params) { attributes_for(:pipeline).fetch(:params) }
 
@@ -33,6 +33,90 @@ RSpec.describe Graphene::Pipeline do
         root.each do |job|
           expect(job.pipeline).to eq(subject)
         end
+      end
+    end
+
+    context "when customizing parents" do
+      module Support
+        module Jobs
+          class DuplicateFilter < ::Jobs::Simple
+          end
+
+          class DurationFilter < ::Jobs::Simple
+          end
+
+          class ExtractFrames < ::Jobs::Simple
+          end
+
+          class ExtractMetadata < ::Jobs::Simple
+          end
+        end
+      end
+
+      class SampleMappingAndPriorities
+        MAPPING = {
+          "duplicate_filter" => [[Support::Jobs::DuplicateFilter]],
+          "duration_filter" => [[Support::Jobs::DurationFilter]],
+          "extract_frames" => [[Support::Jobs::ExtractFrames]],
+          "extract_metadata" => [[Support::Jobs::ExtractMetadata]]
+        }.freeze
+
+        PRIORITIES = {
+          "duplicate_filter" => 1,
+          "duration_filter" => 1,
+          "extract_frames" => 2,
+          "extract_metadata" => 2
+        }.freeze
+
+        def mapping
+          MAPPING
+        end
+
+        def priorities
+          PRIORITIES
+        end
+      end
+
+      before do
+        Graphene.config.mappings_and_priorities["custom"] = SampleMappingAndPriorities.new
+      end
+
+      let(:jobs) do
+        %w[duplicate_filter duration_filter extract_metadata extract_frames]
+      end
+
+      let(:params) do
+        {
+          jobs: jobs,
+          mappings_and_priorities: "custom",
+
+          duplicate_filter: { data: "some data" },
+          duration_filter: { data: "some data" },
+          extract_metadata: { data: "some data", parent: "duplicate_filter" },
+          extract_frames: { data: "some data", parent: "duration_filter" }
+        }
+      end
+
+      let(:graph) do
+        Graphene::Graph::Builder.new(params, jobs, mapping_and_priorities: "custom").to_graph
+      end
+
+      it "sets the parents to the custom parents from params" do
+        pipeline.add_graph(graph)
+        pipeline.save!
+        pipeline.reload
+
+        duplicate_filter = pipeline.jobs.find_by!(type: "Support::Jobs::DuplicateFilter")
+        extract_metadata = pipeline.jobs.find_by!(type: "Support::Jobs::ExtractMetadata")
+
+        duration_filter = pipeline.jobs.find_by!(type: "Support::Jobs::DurationFilter")
+        extract_frames = pipeline.jobs.find_by!(type: "Support::Jobs::ExtractFrames")
+
+        expect(duplicate_filter.children).to eq([extract_metadata])
+        expect(duration_filter.children).to eq([extract_frames])
+
+        expect(extract_frames.parents).to eq([duration_filter])
+        expect(extract_metadata.parents).to eq([duplicate_filter])
       end
     end
   end
