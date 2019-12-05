@@ -1,5 +1,4 @@
 *.DS_Store
 test/dummy/log
-Gemfile.lock
 spec/examples.txt
 node_modules/

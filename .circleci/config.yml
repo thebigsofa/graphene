@@ -26,6 +26,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            gem install bundler
             bundle config gems.contribsys.com $SIDEKIQ_TOKEN
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
