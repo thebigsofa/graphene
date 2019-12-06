@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Graphene::Graph::Builder do
-  subject { described_class.new(jobs, mapping_and_priorities: "custom") }
+  subject { described_class.new({}, jobs, mapping_and_priorities: "custom") }
 
   module Support
     module Jobs

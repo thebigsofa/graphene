@@ -105,6 +105,7 @@ RSpec.describe "Enqueue and process a job (class name amd job name are different
     expect(pipeline.jobs.count).to eq(1)
 
     new_graph = Graphene::Graph::Builder.new(
+      pipeline_params,
       %w[encode simple],
       mapping_and_priorities: "default"
     ).to_graph

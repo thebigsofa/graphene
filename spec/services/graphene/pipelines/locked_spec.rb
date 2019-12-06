@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Graphene::Pipelines::Locked do
-  subject(:klass) { described_class.new(pipeline) }
+  subject { described_class.new(pipeline.reload).call }
 
   let(:pipeline) { create(:pipeline) }
 
@@ -16,13 +16,13 @@ RSpec.describe Graphene::Pipelines::Locked do
     context "is not locked" do
       let(:child_state) { pipeline.children.first.complete! }
 
-      it { expect(klass.call).to eq(false) }
+      it { is_expected.to eq(false) }
     end
 
     context "is locked" do
       let(:child_state) { pipeline.children.first.in_progress! }
 
-      it { expect(klass.call).to eq(true) }
+      it { is_expected.to eq(true) }
     end
   end
 end

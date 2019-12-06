@@ -44,13 +44,31 @@ module Graphene
       end
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def add_graph(graph)
-      Graphene::Jobs::Base.from_graph(graph, pipeline: self).tap do |roots|
+      result = Graphene::Jobs::Base.from_graph(graph, pipeline: self).tap do |roots|
         children.reset if persisted? && children.loaded?
         jobs.reset if persisted? && jobs.loaded?
         add_roots_without_save(roots)
       end
+
+      leaf_jobs = jobs.select { |jj| jj.parent_job.present? }.uniq.compact
+      if leaf_jobs.any?
+        parent_groups = leaf_jobs.map(&:parent_job).uniq
+        jobs.select { |jj| parent_groups.include?(jj.group) }.map do |jj|
+          jj.children = []
+        end
+
+        leaf_jobs.map do |jobbie|
+          jobbie.parents = jobs.select { |jj| jj.group == jobbie.parent_job }
+        end
+      end
+
+      result
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     def increment_version_and_add_graph(graph)
       # Create mapping from job class to jobs
