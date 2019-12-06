@@ -101,7 +101,7 @@ module Graphene
         (pipeline.jobs.pluck(:state).uniq - FINAL_STATES).any?
       end
 
-      # rubocop:disable Naming/UncommunicativeMethodParamName
+      # rubocop:disable Naming/MethodParameterName
       # rubocop:disable Metrics/AbcSize
       def diff_params(a, b)
         a = HashWithIndifferentAccess.new(a)
@@ -111,7 +111,7 @@ module Graphene
           diff << key if !a[key].blank? && !b[key].blank? && a[key] != b[key]
         end
       end
-      # rubocop:enable Naming/UncommunicativeMethodParamName
+      # rubocop:enable Naming/MethodParameterName
       # rubocop:enable Metrics/AbcSize
     end
   end
