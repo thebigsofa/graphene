@@ -30,7 +30,7 @@ module Graphene
             build_group_templates(group, job)
           else
             Graphene::Graph::JobTemplate.new(
-              job, group: group, parent_job: params.dig(group, "parent")
+              job, group: group, parent_jobs: params.dig(group, "parents")
             )
           end
         end

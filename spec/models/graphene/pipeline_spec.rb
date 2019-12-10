@@ -92,8 +92,8 @@ RSpec.describe Graphene::Pipeline do
 
           duplicate_filter: { data: "some data" },
           duration_filter: { data: "some data" },
-          extract_metadata: { data: "some data", parent: "duplicate_filter" },
-          extract_frames: { data: "some data", parent: "duration_filter" }
+          extract_metadata: { data: "some data", parents: ["duplicate_filter"] },
+          extract_frames: { data: "some data", parents: ["duration_filter"] }
         }
       end
 
