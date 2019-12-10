@@ -29,7 +29,7 @@ module Graphene
       include Concerns::Stateable
       include Sheaf
 
-      attribute :parent_job
+      attribute :parent_jobs
 
       has_many :child_edges,
                class_name: "Edge",

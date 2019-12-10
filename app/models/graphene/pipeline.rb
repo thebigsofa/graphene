@@ -53,15 +53,15 @@ module Graphene
         add_roots_without_save(roots)
       end
 
-      leaf_jobs = jobs.select { |jj| jj.parent_job.present? }.uniq.compact
+      leaf_jobs = jobs.select { |jj| jj.parent_jobs.present? }.uniq.compact
       if leaf_jobs.any?
-        parent_groups = leaf_jobs.map(&:parent_job).uniq
+        parent_groups = leaf_jobs.map(&:parent_jobs).flatten.uniq
         jobs.select { |jj| parent_groups.include?(jj.group) }.map do |jj|
           jj.children = []
         end
 
         leaf_jobs.map do |jobbie|
-          jobbie.parents = jobs.select { |jj| jj.group == jobbie.parent_job }
+          jobbie.parents = jobs.select { |jj| jobbie.parent_jobs.include?(jj.group) }
         end
       end
 
