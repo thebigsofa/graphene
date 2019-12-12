@@ -122,7 +122,8 @@ module Graphene
 
     def match_job_attributes(previous_jobs_by_class, previous_jobs_by_group)
       jobs.each do |job|
-        source = previous_jobs_by_group[job.group] || previous_jobs_by_class[job.class]
+        source = job.group.nil? ? previous_jobs_by_class[job.class] : previous_jobs_by_group[job.group] # rubocop:disable Metrics/LineLength
+
         next unless source
 
         excluded_attributes = %w[id type version created_at updated_at]
