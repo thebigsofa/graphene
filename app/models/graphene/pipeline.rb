@@ -70,17 +70,20 @@ module Graphene
     # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
+    # rubocop:disable Metrics/AbcSize
     def increment_version_and_add_graph(graph)
       # Create mapping from job class to jobs
-      previous_jobs = jobs.to_a.map { |j| [j.class, j] }.to_h
+      previous_jobs_by_class = jobs.to_a.map { |j| [j.class, j] }.to_h
+      previous_jobs_by_group = jobs.to_a.map { |j| [j.group, j] }.to_h
 
       # Reset associations here to evict jobs with the previous version from the cache
       children.reset
       jobs.reset
       self.version += 1
       add_graph(graph)
-      match_job_attributes(previous_jobs)
+      match_job_attributes(previous_jobs_by_class, previous_jobs_by_group)
     end
+    # rubocop:enable Metrics/AbcSize
 
     def accept(visitor)
       children.each { |child| visitor.visit(child) }
@@ -117,9 +120,10 @@ module Graphene
 
     private
 
-    def match_job_attributes(from)
+    def match_job_attributes(previous_jobs_by_class, previous_jobs_by_group)
       jobs.each do |job|
-        next unless (source = from[job.class])
+        source = previous_jobs_by_group[job.group] || previous_jobs_by_class[job.class]
+        next unless source
 
         excluded_attributes = %w[id type version created_at updated_at]
         attrs = source.attributes.except(*excluded_attributes)
