@@ -2,3 +2,5 @@
 test/dummy/log
 spec/examples.txt
 node_modules/
+
+coverage

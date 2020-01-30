@@ -39,6 +39,8 @@ group :development, :test do
 
   gem "rubocop"
   gem "rubycritic"
+
+  gem "simplecov-json", require: false
 end
 
 group :development do
