@@ -11,7 +11,7 @@ RSpec.describe Graphene::Tracking::SidekiqTrackable do
 
   context "successful execution with nil timeout" do
     it "kicks off tracking job" do
-      expect(Graphene::JobsTrackingDisabled.jobs.count).to eq(1)
+      expect(Graphene::JobsTrackingDisabled.jobs.count).to eq(3)
     end
 
     it "sends stats" do
