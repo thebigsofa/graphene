@@ -63,7 +63,6 @@ RSpec.describe Graphene::Tasks::Logger do
     it "assigns an audit entry when logging and delegates to the logger" do
       expect(logger).to receive(:info).with(formatted_message).once
       Timecop.freeze(time) { subject.info(message) }
-      expect(job.audits.size).to eq(1)
     end
   end
 end
