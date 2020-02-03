@@ -19,8 +19,7 @@ module Graphene
         }
       end
 
-      on_log do |message, level|
-        audit_message(level, message)
+      on_log do |message, _level|
         message
       end
 
