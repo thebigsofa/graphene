@@ -36,8 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency("activerecord_json_validator", "~> 1.3.0")
 
   spec.add_dependency("excon", "~> 0.67.0")
-  spec.add_dependency("faraday", "~> 0.17.0")
-  spec.add_dependency("faraday_middleware", "~> 0.13.1")
+  spec.add_dependency("faraday", "~> 1.0")
+  spec.add_dependency("faraday_middleware")
 
   spec.add_dependency("pg", "~> 1.1.4")
 
