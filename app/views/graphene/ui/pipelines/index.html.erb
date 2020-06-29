@@ -31,6 +31,8 @@
         <thead class="thead-light">
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">Identifier Type</th>
+            <th scope="col">Identifier</th>
             <th scope="col">Last Update</th>
           </tr>
         </thead>
@@ -40,6 +42,8 @@
               <th>
                 <%= link_to pipeline.id, ui_pipeline_path(pipeline.id) %>
               </th>
+              <th><%= pipeline.identifier_type.humanize %></th>
+              <th><%= pipeline.identifier %></th>
               <th><%= pipeline.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></th>
             </tr>
           <% end %>

@@ -9,17 +9,21 @@ module Graphene
         @params = HashWithIndifferentAccess.new(params)
       end
 
+      # rubocop:disable Metrics/AbcSize
       def call(raise_error = false)
         Graphene::Pipeline.from_params_and_graph(params, graph).tap do |pipeline|
           next unless raise_error || pipeline.valid?
 
           ActiveRecord::Base.transaction do
+            pipeline.identifier = params.dig("identifier", "value").to_s
+            pipeline.identifier_type = params.dig("identifier", "type").to_s
             pipeline.audits.push(audit)
             pipeline.save!
             pipeline.reload.each(&:save!)
           end
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       private
 

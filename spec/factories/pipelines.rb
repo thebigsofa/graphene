@@ -12,6 +12,11 @@ FactoryBot.define do
     end
 
     transient do
+      identifier_type { "media" }
+      identifier { "med123" }
+    end
+
+    transient do
       audit_params do
         {
           "media_uid" => "a03qq7",
@@ -34,6 +39,8 @@ FactoryBot.define do
 
     before(:create) do |pipeline, evaluator|
       pipeline.audits = pipeline.audits.push(evaluator.audit)
+      pipeline.identifier = evaluator.identifier
+      pipeline.identifier_type = evaluator.identifier_type
     end
   end
 end
