@@ -34,14 +34,30 @@ RSpec.describe Graphene::Ui::PipelinesController, type: :controller do
       end
     end
 
+    context "returns paginated pipelines" do
+      before do
+        create_list(:pipeline, 26)
+      end
+
+      it "returns 20 pipelines" do
+        get :index
+        expect(pipelines.count).to eq(20)
+      end
+
+      it "returns the last 6 pipelines" do
+        get :index, params: { page: 2 }
+        expect(pipelines.count).to eq(6)
+      end
+    end
+
     context "search request" do
       let!(:pipeline_a) do
-        create(:pipeline, params: attributes_for(:pipeline).fetch(:params).merge(media_uid: "foobar"))
+        create(:pipeline, identifier: "sausage")
       end
 
       before do
         create(:pipeline)
-        get :index, params: { search: "foobar" }
+        get :index, params: { search: "sausage" }
       end
 
       it "returns the correct response" do

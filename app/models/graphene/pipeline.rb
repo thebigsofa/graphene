@@ -20,7 +20,7 @@ module Graphene
     include ::PgSearch::Model
 
     multisearchable against: %i[id params]
-    pg_search_scope :search, against: %i[id params]
+    pg_search_scope :search, against: %i[id identifier]
 
     has_many :jobs, ->(pipeline) { version(pipeline.version) }, class_name: "Graphene::Jobs::Base"
     has_many :all_jobs, class_name: "Graphene::Jobs::Base", dependent: :destroy

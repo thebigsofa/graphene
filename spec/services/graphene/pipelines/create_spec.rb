@@ -72,5 +72,44 @@ RSpec.describe Graphene::Pipelines::Create do
         expect(Graphene::Jobs::Base.count).to eq(0)
       end
     end
+
+    context "with identifer but no indentifier_type" do
+      let(:params) do
+        {
+          "jobs" => ["simple"],
+          "simple" => { data: data },
+          "identifier" => {
+            "value" => "sausage"
+          }
+        }
+      end
+
+      let(:pipeline) { subject.call }
+
+      it "does not save the pipeline and jobs" do
+        expect(pipeline.identifier).to eq("sausage")
+        expect(pipeline.identifier_type).to be_empty
+      end
+    end
+
+    context "with identifer but no indentifier_type" do
+      let(:params) do
+        {
+          "jobs" => ["simple"],
+          "simple" => { data: data },
+          "identifier" => {
+            "value" => "sausage",
+            "type" => "media uid"
+          }
+        }
+      end
+
+      let(:pipeline) { subject.call }
+
+      it "does not save the pipeline and jobs" do
+        expect(pipeline.identifier).to eq("sausage")
+        expect(pipeline.identifier_type).to eq("media uid")
+      end
+    end
   end
 end
