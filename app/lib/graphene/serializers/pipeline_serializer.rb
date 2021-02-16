@@ -12,7 +12,6 @@ module Graphene
       def to_json(*args)
         {
           id: pipeline.id,
-          params: pipeline.params,
           jobs: jobs,
           version: pipeline.version,
           timestamp: Time.now,
@@ -30,8 +29,6 @@ module Graphene
             version: version_for_job(group, jobs),
             state: state_for_jobs(jobs),
             errors: errors_for_jobs(jobs),
-            children: children_for_jobs(group, jobs),
-            parents: parents_for_jobs(group, jobs),
             audits: audits_for_jobs(jobs),
             artifacts: artifacts_for_jobs(jobs)
           }
