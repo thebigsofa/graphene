@@ -22,7 +22,6 @@ module Graphene
 
       private
 
-      # rubocop:disable Metrics/MethodLength
       def jobs
         pipeline.group_by(&:group).each_with_object({}) do |(group, jobs), result|
           result[group] = {
@@ -34,7 +33,6 @@ module Graphene
           }
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def artifacts_for_jobs(jobs)
         jobs.map(&:artifacts).reduce do |artifact, job|
