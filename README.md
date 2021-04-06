@@ -51,3 +51,8 @@ Graphene.configure do |config|
   config.sidekiq_tracker = MySidekiqTrackerClass
 end
 ```
+
+### Contributions / Upgrading
+- When a new PR is created the `VERSION` should be updated, otherwise the gem will be overwitten in Nexus, which will render `bundle update` unable to do its job.
+- When a PR is created all the tests are run. The PR can be merged when all the tests passed.
+- After the PR is merged, CircleCI runs all the tests again, as well as the `build` workflow. The `build` creates a gem bundle and pushes the gem into the nexus repository. After that `bundle update graphene` command can be run in the application using the gem, to upgrade to the newest version.
