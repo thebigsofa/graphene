@@ -28,7 +28,7 @@ module Graphene
       end
 
       def logger
-        @logger ||= Logger.new(nil)
+        @logger ||= Rails.logger
       end
 
       def log_prefix_elements
