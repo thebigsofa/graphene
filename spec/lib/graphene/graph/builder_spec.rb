@@ -163,23 +163,6 @@ RSpec.describe Graphene::Graph::Builder do
     end
   end
 
-  context "same priority" do
-    let(:jobs) { %w[extract_frames extract_metadata] }
-
-    let(:expected) do
-      [
-        [
-          [Support::Jobs::Process::ExtractFrames],
-          [Support::Jobs::Process::ExtractMetadata]
-        ]
-      ]
-    end
-
-    it "generates the expected graph" do
-      expect(subject.to_graph).to eq(expected)
-    end
-  end
-
   context "mixed priorities" do
     let(:jobs) do
       %w[
