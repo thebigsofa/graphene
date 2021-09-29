@@ -12,7 +12,7 @@ module Graphene
 
       def to_graph
         jobs_grouped_by_priority.map do |group|
-          if group.count == 1
+          if group.count == 1 && mapping.fetch(group.first).count <= 1
             build_group_templates(group.first).first.first
           else
             group.sort.flat_map { |sub_group| build_group_templates(sub_group) }

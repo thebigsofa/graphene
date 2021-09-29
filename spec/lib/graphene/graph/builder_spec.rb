@@ -146,6 +146,23 @@ RSpec.describe Graphene::Graph::Builder do
     end
   end
 
+  context "single job, grouped" do
+    let(:jobs) { ["activity_detection"] }
+
+    let(:expected) do
+      [
+        [
+          [Support::Jobs::Process::AudioActivityDetection],
+          [Support::Jobs::Process::VideoActivityDetection]
+        ]
+      ]
+    end
+
+    it "generates the expected graph" do
+      expect(subject.to_graph).to eq(expected)
+    end
+  end
+
   context "mixed priorities" do
     let(:jobs) do
       %w[
