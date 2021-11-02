@@ -57,6 +57,7 @@ Graphene.configure do |config|
   config.callback_delay = 30 # seconds
 
   config.callback_auth = {
+    method: :https,
     name: :big_sofa_auth,
     credentials: [ENV["LOCATION"], ENV["LOCATION_SECRET"]].freeze,
     class_name: Graphene::NoAuthMiddleware
