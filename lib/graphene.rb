@@ -69,6 +69,7 @@ module Graphene
 
     self.config.callback_delay ||= 30
     self.config.callback_auth ||= {
+      method: :https,
       name: :big_sofa_auth,
       credentials: [].freeze,
       class_name: Graphene::NoAuthMiddleware
@@ -77,7 +78,7 @@ module Graphene
     self.config.poll_timeout ||= 15.minutes
 
     Faraday::Request.register_middleware(
-      config.callback_auth.fetch(:name) => (-> { config.callback_auth.fetch(:class_name) })
+      config.callback_auth.fetch(:name, "") => (-> { config.callback_auth.fetch(:class_name, "") })
     )
 
     self.config.sidekiq_auth_middleware ||= Graphene::NoAuthentication

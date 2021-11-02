@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "ruby-kafka"
   gem "foreman"
   gem "zencoder-fetcher"
   gem "listen", ">= 3.0.5", "< 3.2"

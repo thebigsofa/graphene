@@ -307,7 +307,7 @@ RSpec.describe Graphene::Pipeline do
       expect(Graphene::CallbackAggregate.count_for(subject.id)).to eq(2)
 
       expect_any_instance_of(
-        Graphene::CallbackNotifierJob
+        Graphene::CallbackHandlers::Https
       ).to receive(:connection).exactly(1).times.and_call_original
 
       VCR.use_cassette("models/pipeline/callback") do
