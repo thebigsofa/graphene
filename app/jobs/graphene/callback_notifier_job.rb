@@ -20,7 +20,7 @@ module Graphene
 
       pipeline = Pipeline.find(pipeline_id)
 
-      CALLBACK_CLIENT[Graphene.config.callback_auth.fetch(:method)].call(
+      CALLBACK_CLIENT[Graphene.config.callback_auth.fetch(:method, :https)].call(
         callback: callback,
         pipeline: pipeline
       )
