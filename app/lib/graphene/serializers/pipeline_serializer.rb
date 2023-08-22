@@ -12,7 +12,6 @@ module Graphene
       def to_json(*args)
         {
           id: pipeline.id,
-          params: pipeline.params,
           jobs: jobs,
           version: pipeline.version,
           timestamp: Time.now,
@@ -23,21 +22,17 @@ module Graphene
 
       private
 
-      # rubocop:disable Metrics/MethodLength
       def jobs
         pipeline.group_by(&:group).each_with_object({}) do |(group, jobs), result|
           result[group] = {
             version: version_for_job(group, jobs),
             state: state_for_jobs(jobs),
             errors: errors_for_jobs(jobs),
-            children: children_for_jobs(group, jobs),
-            parents: parents_for_jobs(group, jobs),
             audits: audits_for_jobs(jobs),
             artifacts: artifacts_for_jobs(jobs)
           }
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def artifacts_for_jobs(jobs)
         jobs.map(&:artifacts).reduce do |artifact, job|
